@@ -36,9 +36,11 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere)
-	USpringArmComponent* springArm = nullptr;
+		UStaticMeshComponent* mesh = nullptr;
 
-	UPROPERTY(EditAnywhere) 
-	UStaticMeshComponent* mesh = nullptr;
+	UPROPERTY(EditAnywhere)
+		USpringArmComponent* springArm = nullptr;
+
+	
 	
 };

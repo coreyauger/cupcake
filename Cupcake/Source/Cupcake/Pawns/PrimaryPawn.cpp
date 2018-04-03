@@ -13,10 +13,10 @@ APrimaryPawn::APrimaryPawn()
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
-	RootComponent = mesh;
+	RootComponent = mesh; 
 	springArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-	springArm->TargetArmLength = 2500.f;
-	springArm->SetWorldRotation(FRotator(-50.0f, 0.0f, 0.0f));
+	springArm->TargetArmLength = 2000.f;
+	springArm->SetWorldRotation(FRotator(-45.0f, 0.0f, 0.0f));
 
 	camera->AttachToComponent(springArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);
 
