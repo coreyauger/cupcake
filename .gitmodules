@@ -1,0 +1,3 @@
+[submodule "Cupcake/Swipe"]
+	path = Cupcake/Swipe
+	url = git@github.com:coreyauger/Swipe.git
