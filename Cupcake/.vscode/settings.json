@@ -1,0 +1,7 @@
+{
+	"files.exclude": {
+		"/home/suroot/projects/cupcake/Cupcake/.vscode": true,
+		"/home/suroot/projects/cupcake/Cupcake/Content": true,
+		"/home/suroot/projects/cupcake/Cupcake/Intermediate": true
+	}
+}

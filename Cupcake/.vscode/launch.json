@@ -1,0 +1,106 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Cupcake (Debug)",
+			"request": "launch",
+			"preLaunchTask": "Cupcake Linux Debug Build",
+			"program": "/home/suroot/projects/cupcake/Cupcake/Binaries/Linux/Cupcake-Linux-Debug",
+			"args": [
+			],
+			"cwd": "/media/suroot/projects/UnrealEngine",
+			"type": "lldb"
+		},
+		{
+			"name": "Cupcake (DebugGame)",
+			"request": "launch",
+			"preLaunchTask": "Cupcake Linux DebugGame Build",
+			"program": "/home/suroot/projects/cupcake/Cupcake/Binaries/Linux/Cupcake-Linux-DebugGame",
+			"args": [
+			],
+			"cwd": "/media/suroot/projects/UnrealEngine",
+			"type": "lldb"
+		},
+		{
+			"name": "Cupcake (Development)",
+			"request": "launch",
+			"preLaunchTask": "Cupcake Linux Development Build",
+			"program": "/home/suroot/projects/cupcake/Cupcake/Binaries/Linux/Cupcake",
+			"args": [
+			],
+			"cwd": "/media/suroot/projects/UnrealEngine",
+			"type": "lldb"
+		},
+		{
+			"name": "Cupcake (Shipping)",
+			"request": "launch",
+			"preLaunchTask": "Cupcake Linux Shipping Build",
+			"program": "/home/suroot/projects/cupcake/Cupcake/Binaries/Linux/Cupcake-Linux-Shipping",
+			"args": [
+			],
+			"cwd": "/media/suroot/projects/UnrealEngine",
+			"type": "lldb"
+		},
+		{
+			"name": "Cupcake (Test)",
+			"request": "launch",
+			"preLaunchTask": "Cupcake Linux Test Build",
+			"program": "/home/suroot/projects/cupcake/Cupcake/Binaries/Linux/Cupcake-Linux-Test",
+			"args": [
+			],
+			"cwd": "/media/suroot/projects/UnrealEngine",
+			"type": "lldb"
+		},
+		{
+			"name": "CupcakeEditor (Debug)",
+			"request": "launch",
+			"preLaunchTask": "CupcakeEditor Linux Debug Build",
+			"program": "/media/suroot/projects/UnrealEngine/Engine/Binaries/Linux/UE4Editor-Linux-Debug",
+			"args": [
+				"/home/suroot/projects/cupcake/Cupcake/Cupcake.uproject",
+				"-debug"
+			],
+			"cwd": "/media/suroot/projects/UnrealEngine",
+			"type": "lldb"
+		},
+		{
+			"name": "CupcakeEditor (DebugGame)",
+			"request": "launch",
+			"preLaunchTask": "CupcakeEditor Linux DebugGame Build",
+			"program": "/media/suroot/projects/UnrealEngine/Engine/Binaries/Linux/UE4Editor",
+			"args": [
+				"/home/suroot/projects/cupcake/Cupcake/Cupcake.uproject",
+				"-debug"
+			],
+			"cwd": "/media/suroot/projects/UnrealEngine",
+			"type": "lldb"
+		},
+		{
+			"name": "CupcakeEditor (Development)",
+			"request": "launch",
+			"preLaunchTask": "CupcakeEditor Linux Development Build",
+			"program": "/media/suroot/projects/UnrealEngine/Engine/Binaries/Linux/UE4Editor",
+			"args": [
+				"/home/suroot/projects/cupcake/Cupcake/Cupcake.uproject"
+			],
+			"cwd": "/media/suroot/projects/UnrealEngine",
+			"type": "lldb"
+		},
+		{
+			"name": "Generate Project Files",
+			"type": "mono",
+			"request": "launch",
+			"program": "/media/suroot/projects/UnrealEngine/Engine/Binaries/DotNET/UnrealBuildTool.exe",
+			"console": "internalConsole",
+			"args": [
+				"-projectfiles",
+				"-vscode",
+				"-project=\"/home/suroot/projects/cupcake/Cupcake/Cupcake.uproject\"",
+				"-game",
+				"-engine"
+			],
+			"internalConsoleOptions": "openOnSessionStart",
+			"cwd": "/media/suroot/projects/UnrealEngine"
+		}
+	]
+}

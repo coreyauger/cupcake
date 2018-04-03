@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{1B918875-2F03-0A06-003A-012D3C2217BF}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "Cupcake",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
