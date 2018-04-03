@@ -24,6 +24,9 @@ protected:
 
 	UCameraComponent* camera = nullptr;
 	FVector2D touchInput;
+	
+	void DragX(float x);
+	void DragY(float y);
 
 public:	
 	// Called every frame
@@ -35,7 +38,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* springArm = nullptr;
 
-	UPROPERTY(EditAnywhere)
-	UMeshComponent* mesh = nullptr;
+	UPROPERTY(EditAnywhere) 
+	UStaticMeshComponent* mesh = nullptr;
 	
 };

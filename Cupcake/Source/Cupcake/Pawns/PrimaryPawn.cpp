@@ -2,7 +2,7 @@
 
 
 #include "PrimaryPawn.h"
-
+ 
 
 // Sets default values
 APrimaryPawn::APrimaryPawn()
@@ -11,7 +11,7 @@ APrimaryPawn::APrimaryPawn()
 	PrimaryActorTick.bCanEverTick = true;
 	springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	mesh = CreateDefaultSubobject<UMeshComponent>(TEXT("Mesh"));
+	mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 	RootComponent = mesh;
 	springArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
@@ -34,13 +34,23 @@ void APrimaryPawn::BeginPlay()
 void APrimaryPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
 void APrimaryPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	PlayerInputComponent->BindAxis("DragX", this, &APrimaryPawn::DragX);
+	PlayerInputComponent->BindAxis("DragY", this, &APrimaryPawn::DragY);
+}
 
+void APrimaryPawn::DragX(float x){
+	UE_LOG(LogTemp, Warning, TEXT("DragX: %f"), x);
+	touchInput.X = x;
+}
+
+void APrimaryPawn::DragY(float y){
+	UE_LOG(LogTemp, Warning, TEXT("DragY: %f"), y);
+	touchInput.Y = y;
 }
 
