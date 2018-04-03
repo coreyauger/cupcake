@@ -7489,5 +7489,6 @@ SOURCES += \
 	"$$unrealRootPath/Engine/Plugins/Tests/ScreenshotTools/Source/ScreenshotTools/Private/ScreenshotTools.cpp" \
 	"$$CupcakeRootPath/Source/Cupcake/Cupcake.cpp" \
 	"$$CupcakeRootPath/Source/Cupcake/CupcakeGameModeBase.cpp" \
+	"$$CupcakeRootPath/Source/Cupcake/Pawns/PrimaryPawn.cpp" \
  
 

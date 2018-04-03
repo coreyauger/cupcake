@@ -1,7 +1,11 @@
 {
 	"files.exclude": {
+		"/home/suroot/projects/cupcake/Cupcake/.idea": true,
+		"/home/suroot/projects/cupcake/Cupcake/.kdev4": true,
 		"/home/suroot/projects/cupcake/Cupcake/.vscode": true,
 		"/home/suroot/projects/cupcake/Cupcake/Content": true,
-		"/home/suroot/projects/cupcake/Cupcake/Intermediate": true
+		"/home/suroot/projects/cupcake/Cupcake/DerivedDataCache": true,
+		"/home/suroot/projects/cupcake/Cupcake/Intermediate": true,
+		"/home/suroot/projects/cupcake/Cupcake/Saved": true
 	}
 }

@@ -9677,5 +9677,6 @@ HEADERS += \
 	"$$unrealRootPath/Engine/Plugins/Tests/ScreenshotTools/Source/ScreenshotTools/Public/ScreenshotTools.h" \
 	"$$CupcakeRootPath/Source/Cupcake/Cupcake.h" \
 	"$$CupcakeRootPath/Source/Cupcake/CupcakeGameModeBase.h" \
+	"$$CupcakeRootPath/Source/Cupcake/Pawns/PrimaryPawn.h" \
  
 
