@@ -40,7 +40,5 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		USpringArmComponent* springArm = nullptr;
-
-	
 	
 };
