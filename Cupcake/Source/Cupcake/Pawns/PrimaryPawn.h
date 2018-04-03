@@ -40,5 +40,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		USpringArmComponent* springArm = nullptr;
+
+	/** What is the Player's current musical skill level? */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Swipe")
+	FVector2D TouchBegin;
 	
 };
