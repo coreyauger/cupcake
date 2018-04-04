@@ -4,6 +4,8 @@
 #include "PrimaryPawn.h"
  
 
+#define OUT
+
 // Sets default values
 APrimaryPawn::APrimaryPawn()
 {
@@ -27,7 +29,12 @@ APrimaryPawn::APrimaryPawn()
 void APrimaryPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	controller = GetWorld()->GetFirstPlayerController();
+	if(!controller){
+		UE_LOG(LogTemp, Error, TEXT("Could not get player controller."));
+	}else{
+		UE_LOG(LogTemp, Warning, TEXT("Wee we have a player controller"));
+	}
 }
 
 // Called every frame
@@ -71,6 +78,15 @@ void APrimaryPawn::TouchMoved(const FVector2D &touchMoved){
 
 void APrimaryPawn::SingleTap(const FVector2D &singleTap){
 	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd: %s"), *touchBegin.ToString());
-	UE_LOG(LogTemp, Warning, TEXT("SingleTap"));
+	UE_LOG(LogTemp, Warning, TEXT("SingleTap !"));
+	if(controller){
+		UE_LOG(LogTemp, Warning, TEXT("Hit Test !!"));
+		FHitResult hit;
+		FCollisionQueryParams traceParams(FName(TEXT("")), false, GetOwner());
+		controller->GetHitResultAtScreenPosition(singleTap, ECollisionChannel::ECC_Pawn, traceParams, OUT hit);
+		if(hit.GetActor()){
+			UE_LOG(LogTemp, Warning, TEXT("UGrabber Hit: %s"), *hit.GetActor()->GetName() );
+		}
+	}
 }
 

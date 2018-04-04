@@ -25,6 +25,7 @@ protected:
 	UCameraComponent* camera = nullptr;
 	FVector2D mTouchBegin; 
 	FVector2D mTouchMoved; 
+	APlayerController *controller = nullptr;
 		
 public:	
 	// Called every frame
@@ -36,7 +37,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* mesh = nullptr;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere) 
 	USpringArmComponent* springArm = nullptr;
 
 	/** Touch Begin 2D Screen corrd */
