@@ -15,7 +15,7 @@ APrimaryPawn::APrimaryPawn()
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
-	RootComponent = mesh; 
+	//RootComponent = mesh; 
 	springArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
 	springArm->TargetArmLength = 2000.f;
 	springArm->SetWorldRotation(FRotator(-45.0f, 0.0f, 0.0f));
@@ -27,6 +27,10 @@ APrimaryPawn::APrimaryPawn()
 	pawnMovementComponent->UpdatedComponent = RootComponent;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+}
+
+UPawnMovementComponent* APrimaryPawn::GetMovementComponent() const{
+    return pawnMovementComponent;
 }
 
 // Called when the game starts or when spawned
@@ -91,9 +95,14 @@ void APrimaryPawn::SingleTap(const FVector2D &singleTap){
 		FCollisionQueryParams traceParams(FName(TEXT("")), false, GetOwner());
 		controller->GetHitResultAtScreenPosition(singleTap, ECollisionChannel::ECC_Pawn, traceParams, OUT hit);
 		if(hit.GetActor()){
-			UE_LOG(LogTemp, Warning, TEXT("UGrabber Hit: %s"), *hit.GetActor()->GetName() );
+			UE_LOG(LogTemp, Warning, TEXT("UGrabber Hit : %s"), *hit.GetActor()->GetName() );
 			// TODO: this could be used to selct or query items in the scene..
 			//GetOwner()->GetActor()->
+			// TODO: trying to move our pawn with a click
+			if (pawnMovementComponent && (pawnMovementComponent->UpdatedComponent == RootComponent)){
+				UE_LOG(LogTemp, Warning, TEXT("Move forward !!!!!!!!!!!!!!!!") );
+				pawnMovementComponent->AddInputVector(GetActorForwardVector() * 20.0f);	// NOTE: this is just scaled between 0-1
+			}
 		}
 	}
 }

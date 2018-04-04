@@ -16,12 +16,13 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
     }
 
     // Get (and then clear) the movement vector that we set in ACollidingPawn::Tick
-    FVector DesiredMovementThisFrame = ConsumeInputVector().GetClampedToMaxSize(1.0f) * DeltaTime * 150.0f;
+    FVector DesiredMovementThisFrame = ConsumeInputVector().GetClampedToMaxSize(1.0f) * DeltaTime * 15000.0f;
+    
     if (!DesiredMovementThisFrame.IsNearlyZero())
     {
         FHitResult Hit;
         SafeMoveUpdatedComponent(DesiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true, Hit);
-
+UE_LOG(LogTemp, Warning, TEXT("DO MOVE: %s"), *DesiredMovementThisFrame.ToString() );
         // If we bumped into something, try to slide along it
         if (Hit.IsValidBlockingHit())
         {
