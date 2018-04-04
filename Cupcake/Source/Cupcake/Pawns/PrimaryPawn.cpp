@@ -34,6 +34,9 @@ void APrimaryPawn::BeginPlay()
 void APrimaryPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	FRotator yawUpdate = springArm->GetComponentRotation();
+	yawUpdate.Yaw = touchInput.X;
+	springArm->SetWorldRotation(yawUpdate);
 }
 
 // Called to bind functionality to input
@@ -44,33 +47,26 @@ void APrimaryPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 //	PlayerInputComponent->BindAxis("DragY", this, &APrimaryPawn::DragY);
 }
 
-void APrimaryPawn::TouchBegin(const FVector2D &touchBegin){
+void APrimaryPawn::TouchBegin(const FVector2D &touchBegin){ 
 	//UE_LOG(LogTemp, Warning, TEXT("TouchBegin: %s"), *touchBegin.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("TouchBegin"));
+	touchInput = touchBegin;
 }
 
 void APrimaryPawn::TouchEnd(const FVector2D &touchEnd){
 	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd: %s"), *touchBegin.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("TouchEnd"));
+	touchInput = FVector2D(0.f, 0.f);		// reset the vector 
 }
 
 void APrimaryPawn::TouchMoved(const FVector2D &touchMoved){
 	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd: %s"), *touchBegin.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("TouchMove"));
+	touchInput = touchMoved;
 }
 
 void APrimaryPawn::SingleTap(const FVector2D &singleTap){
 	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd: %s"), *touchBegin.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("SingleTap"));
-}
-
-void APrimaryPawn::DragX(float x){
-	UE_LOG(LogTemp, Warning, TEXT("DragX: %f"), x);
-	touchInput.X = x;
-}
-
-void APrimaryPawn::DragY(float y){
-	UE_LOG(LogTemp, Warning, TEXT("DragY: %f"), y);
-	touchInput.Y = y;
 }
 
