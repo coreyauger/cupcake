@@ -36,13 +36,26 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* mesh = nullptr;
+	UStaticMeshComponent* mesh = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		USpringArmComponent* springArm = nullptr;
+	USpringArmComponent* springArm = nullptr;
 
-	/** What is the Player's current musical skill level? */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Swipe")
-	FVector2D TouchBegin;
+	/** Touch Begin 2D Screen corrd */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Swipe")
+	UFUNCTION(BlueprintCallable, Category="Swipe")
+	void TouchBegin(const FVector2D &touchBegin);
+
+	/** Touch End in 2d screen space  */
+	UFUNCTION(BlueprintCallable, Category="Swipe")
+	void TouchEnd(const FVector2D &touchEnd);
+
+	/** Touch Moved in 2d screen space  */
+	UFUNCTION(BlueprintCallable, Category="Swipe")
+	void TouchMoved(const FVector2D &touchMoved);
+
+	/** Player Single Tap Corrd in 2d screen space */
+	UFUNCTION(BlueprintCallable, Category="Swipe")
+	void SingleTap(const FVector2D &singleTap);
 	
 };

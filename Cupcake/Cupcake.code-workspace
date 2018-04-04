@@ -10,7 +10,9 @@
 	"settings": {
 		"typescript.tsc.autoDetect": "off",
 		"files.associations": {
-			"__nullptr": "cpp"
+			"__nullptr": "cpp",
+			"__locale": "cpp",
+			"locale": "cpp"
 		}
 	}
 }

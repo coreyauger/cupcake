@@ -40,8 +40,28 @@ void APrimaryPawn::Tick(float DeltaTime)
 void APrimaryPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAxis("DragX", this, &APrimaryPawn::DragX);
-	PlayerInputComponent->BindAxis("DragY", this, &APrimaryPawn::DragY);
+//	PlayerInputComponent->BindAxis("DragX", this, &APrimaryPawn::DragX);
+//	PlayerInputComponent->BindAxis("DragY", this, &APrimaryPawn::DragY);
+}
+
+void APrimaryPawn::TouchBegin(const FVector2D &touchBegin){
+	//UE_LOG(LogTemp, Warning, TEXT("TouchBegin: %s"), *touchBegin.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("TouchBegin"));
+}
+
+void APrimaryPawn::TouchEnd(const FVector2D &touchEnd){
+	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd: %s"), *touchBegin.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("TouchEnd"));
+}
+
+void APrimaryPawn::TouchMoved(const FVector2D &touchMoved){
+	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd: %s"), *touchBegin.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("TouchMove"));
+}
+
+void APrimaryPawn::SingleTap(const FVector2D &singleTap){
+	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd: %s"), *touchBegin.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("SingleTap"));
 }
 
 void APrimaryPawn::DragX(float x){
