@@ -22,6 +22,10 @@ APrimaryPawn::APrimaryPawn()
 
 	camera->AttachToComponent(springArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);
 
+	// Create an instance of our movement component, and tell it to update the root.
+	pawnMovementComponent = CreateDefaultSubobject<UCollidingPawnMovementComponent>(TEXT("PawnCustomMovementComponent"));
+	pawnMovementComponent->UpdatedComponent = RootComponent;
+
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
@@ -61,6 +65,8 @@ void APrimaryPawn::TouchBegin(const FVector2D &touchBegin){
 	UE_LOG(LogTemp, Warning, TEXT("TouchBegin"));
 	mTouchBegin = touchBegin;
 	mTouchMoved = touchBegin;
+	// TODO: do a hit test for our pawn.
+	// - if we hit the pawn then we switch into "shot" mode.
 }
 
 void APrimaryPawn::TouchEnd(const FVector2D &touchEnd){
@@ -86,6 +92,8 @@ void APrimaryPawn::SingleTap(const FVector2D &singleTap){
 		controller->GetHitResultAtScreenPosition(singleTap, ECollisionChannel::ECC_Pawn, traceParams, OUT hit);
 		if(hit.GetActor()){
 			UE_LOG(LogTemp, Warning, TEXT("UGrabber Hit: %s"), *hit.GetActor()->GetName() );
+			// TODO: this could be used to selct or query items in the scene..
+			//GetOwner()->GetActor()->
 		}
 	}
 }

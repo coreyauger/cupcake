@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/MeshComponent.h"
+#include "CollidingPawnMovementComponent.h"
 #include "PrimaryPawn.generated.h"
 
 UCLASS()
@@ -26,6 +27,7 @@ protected:
 	FVector2D mTouchBegin; 
 	FVector2D mTouchMoved; 
 	APlayerController *controller = nullptr;
+	UCollidingPawnMovementComponent* pawnMovementComponent = nullptr;
 		
 public:	
 	// Called every frame
