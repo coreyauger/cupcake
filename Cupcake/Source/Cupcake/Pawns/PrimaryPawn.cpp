@@ -35,8 +35,8 @@ void APrimaryPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	FRotator yawUpdate = springArm->GetComponentRotation();
-	FVector2D delta = mTouchMoved - mTouchBegin;
-	yawUpdate.Yaw += delta.X;
+	FVector2D delta = mTouchMoved - mTouchBegin;	
+	yawUpdate.Yaw -= delta.X / 8.0f;	// 8? dampening?
 	springArm->SetWorldRotation(yawUpdate);
 	mTouchBegin = mTouchMoved;
 }
