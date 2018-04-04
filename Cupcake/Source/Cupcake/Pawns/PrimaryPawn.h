@@ -23,7 +23,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	UCameraComponent* camera = nullptr;
-	FVector2D touchInput; 
+	FVector2D mTouchBegin; 
+	FVector2D mTouchMoved; 
 		
 public:	
 	// Called every frame
