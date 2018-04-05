@@ -14,7 +14,7 @@ UCLASS()
 class CUPCAKE_API UCollidingPawnMovementComponent : public UPawnMovementComponent
 { 
 	GENERATED_BODY()
-  
+   
 private:
   
 public:

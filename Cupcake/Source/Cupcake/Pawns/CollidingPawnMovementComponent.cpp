@@ -23,9 +23,9 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
         SafeMoveUpdatedComponent(DesiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true, Hit);
         //UE_LOG(LogTemp, Warning, TEXT("DO MOVE: %s"), *DesiredMovementThisFrame.ToString() );
         // If we bumped into something, try to slide along it
-        if (Hit.IsValidBlockingHit()){
+        if (Hit.IsValidBlockingHit()){ 
             
-            DesiredMovementThisFrame = Velocity.MirrorByVector(Hit.ImpactNormal);
+            DesiredMovementThisFrame = Velocity.MirrorByVector(Hit.ImpactNormal) - Hit.Location;
             //SafeMoveUpdatedComponent(DesiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true, Hit);
             //MoveUpdatedComponent(DesiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true, &Hit);
             
