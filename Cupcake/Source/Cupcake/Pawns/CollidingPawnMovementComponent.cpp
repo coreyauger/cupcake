@@ -25,7 +25,7 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
         // If we bumped into something, try to slide along it
         if (Hit.IsValidBlockingHit()){
             
-            DesiredMovementThisFrame = -Velocity.MirrorByVector(Hit.ImpactNormal);
+            DesiredMovementThisFrame = Velocity.MirrorByVector(Hit.ImpactNormal);
             //SafeMoveUpdatedComponent(DesiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true, Hit);
             //MoveUpdatedComponent(DesiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true, &Hit);
             
