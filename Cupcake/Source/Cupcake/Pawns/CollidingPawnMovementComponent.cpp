@@ -12,7 +12,7 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
     }
 
     // simulate physics...
-    Velocity = (Velocity + gravity + ConsumeInputVector()) * (1.0f-drag);
+    Velocity = (Velocity /*+ gravity*/ + ConsumeInputVector()) * (1.0f-drag);
 
     // Get (and then clear) the movement vector that we set in ACollidingPawn::Tick
     //FVector DesiredMovementThisFrame = ConsumeInputVector().GetClampedToMaxSize(1.0f) * DeltaTime * 15000.0f;
@@ -25,7 +25,7 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
         // If we bumped into something, try to slide along it
         if (Hit.IsValidBlockingHit()){
             
-            //DesiredMovementThisFrame = -Velocity.MirrorByVector(Hit.ImpactNormal);
+            DesiredMovementThisFrame = -Velocity.MirrorByVector(Hit.ImpactNormal);
             //SafeMoveUpdatedComponent(DesiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true, Hit);
             //MoveUpdatedComponent(DesiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true, &Hit);
             
