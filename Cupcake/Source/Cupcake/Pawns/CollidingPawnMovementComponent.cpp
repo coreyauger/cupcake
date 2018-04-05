@@ -28,7 +28,13 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
             //DesiredMovementThisFrame = -Velocity.MirrorByVector(Hit.ImpactNormal);
             //SafeMoveUpdatedComponent(DesiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true, Hit);
             //MoveUpdatedComponent(DesiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true, &Hit);
-            SlideAlongSurface(DesiredMovementThisFrame, 1.f - Hit.Time, Hit.Normal, Hit);
+            
+            // Allow this hit to be used as an impact we can deflect off, otherwise we do nothing the rest of the update and appear to hitch.
+            HandleImpact(Hit);
+            //SlideAlongSurface(DesiredMovementThisFrame, 1.f - Hit.Time, Hit.Normal, Hit);
+UE_LOG(LogTemp, Warning, TEXT("DO MOVE: %s"), *FVector(DesiredMovementThisFrame.X, DesiredMovementThisFrame.Y, 0.0f).ToString() );
+            UpdatedComponent->MoveComponent(FVector(DesiredMovementThisFrame.X, DesiredMovementThisFrame.Y, 0.0f), UpdatedComponent->GetComponentRotation(), true);
+
             //GetOwner()->SetActorLocation(GetOwner()->GetActorLocation() + DesiredMovementThisFrame);
         } 
          

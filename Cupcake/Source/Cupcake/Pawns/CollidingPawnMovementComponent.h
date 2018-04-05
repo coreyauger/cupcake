@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#pragma once
+#pragma once 
 
 #include "CoreMinimal.h" 
 #include "GameFramework/PawnMovementComponent.h" 
 #include "CollidingPawnMovementComponent.generated.h"
-
+ 
 //https://stackoverflow.com/questions/8063696/arkanoid-physics-projectile-physics-simulation
 /**
  * 
@@ -26,7 +26,7 @@ public:
 
     UPROPERTY(EditAnywhere) 
 	float drag = 0.02f;
-
+ 
     // mass in Kg
     UPROPERTY(EditAnywhere) 
 	float mass = 10.0f;	
