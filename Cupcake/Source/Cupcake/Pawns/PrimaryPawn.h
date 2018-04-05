@@ -10,7 +10,7 @@
 #include "CollidingPawnMovementComponent.h"
 #include "PrimaryPawn.generated.h"
 
-UCLASS()
+UCLASS() 
 class CUPCAKE_API APrimaryPawn : public APawn
 {
 	GENERATED_BODY() 
