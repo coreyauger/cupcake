@@ -100,10 +100,13 @@ void APrimaryPawn::SingleTap(const FVector2D &singleTap){
 			//GetOwner()->GetActor()->
 			// TODO: trying to move our pawn with a click
 			if (pawnMovementComponent && (pawnMovementComponent->UpdatedComponent == RootComponent)){
-				UE_LOG(LogTemp, Warning, TEXT("Move forward !!!!!!!!!!!!!!!!") );
 				// TODO: we want the camera look vector projected onto the groud plane...
+				// VectorPlaneProject
+				// http://api.unrealengine.com/INT/API/Runtime/Core/Math/FVector/index.html
 				FVector look = camera->GetComponentRotation().Vector();
-				pawnMovementComponent->AddInputVector(look * 10000.0f);	// NOTE: this is just scaled between 0-1
+				FVector thrust = FVector::VectorPlaneProject(look, FVector(0.0f, 0.0f, 1.0f)) * 1000.0f;
+				UE_LOG(LogTemp, Warning, TEXT("Move forward !!!!!!!!!!!!!!!!   %s"), *thrust.ToString() );
+				pawnMovementComponent->AddInputVector(thrust);
 			}
 		}
 	}

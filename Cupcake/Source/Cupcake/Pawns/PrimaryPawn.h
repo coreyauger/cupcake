@@ -10,12 +10,12 @@
 #include "CollidingPawnMovementComponent.h"
 #include "PrimaryPawn.generated.h"
 
-UCLASS() 
+UCLASS()
 class CUPCAKE_API APrimaryPawn : public APawn
 {
 	GENERATED_BODY() 
 
-public:
+public:   
 	// Sets default values for this pawn's properties
 	APrimaryPawn();
 
@@ -29,7 +29,7 @@ protected:
 	APlayerController *controller = nullptr;
 	UCollidingPawnMovementComponent* pawnMovementComponent = nullptr;
 		
-public:	
+public:	 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
