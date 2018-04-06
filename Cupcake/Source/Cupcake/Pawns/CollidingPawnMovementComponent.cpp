@@ -11,7 +11,7 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
         return;
     }
 
-    // simulate physics...
+    // simulate physics... 
     Velocity = (Velocity + gravity + ConsumeInputVector()) * (1.0f-drag);
 
     // Get (and then clear) the movement vector that we set in ACollidingPawn::Tick
@@ -34,7 +34,7 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
                 if(!movementVector.Normalize(0.0001)){ // no movment.. so just return?
                     return;
                 }
-            }
+            } 
             FVector reflect = movementVector.MirrorByVector(Hit.ImpactNormal);
             reflect.Normalize();
             desiredMovementThisFrame = reflect * sizeOfReflect;

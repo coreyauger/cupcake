@@ -17,13 +17,13 @@ class CUPCAKE_API APrimaryPawn : public APawn
 
 public:   
 	// Sets default values for this pawn's properties
-	APrimaryPawn();
+	APrimaryPawn(); 
 
-protected:
+protected: 
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	UCameraComponent* camera = nullptr;
+	virtual void BeginPlay() override; 
+ 
+	UCameraComponent* camera = nullptr; 
 	FVector2D mTouchBegin; 
 	FVector2D mTouchMoved; 
 	APlayerController *controller = nullptr;
@@ -31,17 +31,17 @@ protected:
 		
 public:	  
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override; 
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual UPawnMovementComponent* GetMovementComponent() const override;
 
 	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* mesh = nullptr;
+	UStaticMeshComponent* mesh = nullptr; 
 
 	UPROPERTY(EditAnywhere) 
-	USpringArmComponent* springArm = nullptr;
+	USpringArmComponent* springArm = nullptr; 
 
 	/** Touch Begin 2D Screen corrd */
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Swipe")

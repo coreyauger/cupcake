@@ -8,7 +8,7 @@
    
 //https://stackoverflow.com/questions/8063696/arkanoid-physics-projectile-physics-simulation
 /** 
- *   
+ *    
  */  
 UCLASS() 
 class CUPCAKE_API UCollidingPawnMovementComponent : public UPawnMovementComponent
@@ -16,7 +16,7 @@ class CUPCAKE_API UCollidingPawnMovementComponent : public UPawnMovementComponen
 	GENERATED_BODY()  
    
 private:  
-  
+   
 public:
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;  
 
@@ -25,9 +25,10 @@ public:
 	FVector gravity = FVector(0.0f, 0.0f, -9.81f);
 
     UPROPERTY(EditAnywhere) 
-	float drag = 0.02f;
+	float drag = 0.025f; 
  
     // mass in Kg
     UPROPERTY(EditAnywhere) 
 	float mass = 10.0f;	
 };  
+ 

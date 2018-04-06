@@ -15,18 +15,15 @@ APrimaryPawn::APrimaryPawn()
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
-	//RootComponent = mesh; 
+	RootComponent = mesh; 
 	springArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-	springArm->TargetArmLength = 2000.f;
-	springArm->SetWorldRotation(FRotator(-45.0f, 0.0f, 0.0f));
-
-	camera->AttachToComponent(springArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);
-
+	springArm->TargetArmLength = 1500.f;
+	springArm->SetWorldRotation(FRotator(-30.0f, 0.0f, 0.0f));
+	camera->AttachToComponent(springArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);	
 	// Create an instance of our movement component, and tell it to update the root.
 	pawnMovementComponent = CreateDefaultSubobject<UCollidingPawnMovementComponent>(TEXT("PawnCustomMovementComponent"));
-	pawnMovementComponent->UpdatedComponent = RootComponent;
 
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	AutoPossessPlayer = EAutoReceiveInput::Player0; 
 }
 
 UPawnMovementComponent* APrimaryPawn::GetMovementComponent() const{
@@ -34,9 +31,10 @@ UPawnMovementComponent* APrimaryPawn::GetMovementComponent() const{
 }
 
 // Called when the game starts or when spawned
-void APrimaryPawn::BeginPlay()
+void APrimaryPawn::BeginPlay() 
 {
 	Super::BeginPlay();
+	pawnMovementComponent->UpdatedComponent = RootComponent;
 	controller = GetWorld()->GetFirstPlayerController();
 	if(!controller){
 		UE_LOG(LogTemp, Error, TEXT("Could not get player controller."));
@@ -104,7 +102,7 @@ void APrimaryPawn::SingleTap(const FVector2D &singleTap){
 				// VectorPlaneProject
 				// http://api.unrealengine.com/INT/API/Runtime/Core/Math/FVector/index.html
 				FVector look = camera->GetComponentRotation().Vector();
-				FVector thrust = FVector::VectorPlaneProject(look, FVector(0.0f, 0.0f, 1.0f)) * 5000.0f;
+				FVector thrust = FVector::VectorPlaneProject(look, FVector(0.0f, 0.0f, 1.0f)) * 2000.0f;
 				UE_LOG(LogTemp, Warning, TEXT("Move forward !!!!!!!!!!!!!!!!   %s"), *thrust.ToString() );
 				pawnMovementComponent->AddInputVector(thrust);
 			}
