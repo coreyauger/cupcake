@@ -12,10 +12,10 @@
  */  
 UCLASS() 
 class CUPCAKE_API UCollidingPawnMovementComponent : public UPawnMovementComponent
-{ 
+{  
 	GENERATED_BODY()  
    
-private: 
+private:  
   
 public:
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;  
