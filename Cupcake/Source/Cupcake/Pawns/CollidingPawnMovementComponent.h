@@ -7,15 +7,15 @@
 #include "CollidingPawnMovementComponent.generated.h"
    
 //https://stackoverflow.com/questions/8063696/arkanoid-physics-projectile-physics-simulation
-/**
- * 
+/** 
+ *   
  */  
-UCLASS()
+UCLASS() 
 class CUPCAKE_API UCollidingPawnMovementComponent : public UPawnMovementComponent
 { 
-	GENERATED_BODY()
+	GENERATED_BODY()  
    
-private:
+private: 
   
 public:
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;  

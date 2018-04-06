@@ -29,7 +29,7 @@ protected:
 	APlayerController *controller = nullptr;
 	UCollidingPawnMovementComponent* pawnMovementComponent = nullptr;
 		
-public:	 
+public:	  
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
