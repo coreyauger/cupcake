@@ -5,15 +5,19 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
-#include "Components/MeshComponent.h"
 #include "CollidingPawnMovementComponent.h"
 #include "PrimaryPawn.generated.h"
 
+enum PawnMode{
+	Selected,
+	Camera,
+	Aim
+};
+
 UCLASS()
-class CUPCAKE_API APrimaryPawn : public APawn
+class CUPCAKE_API APrimaryPawn : public APawn 
 {
-	GENERATED_BODY() 
+	GENERATED_BODY()  
 
 public:   
 	// Sets default values for this pawn's properties
@@ -22,13 +26,19 @@ public:
 protected: 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override; 
+	virtual void UpdateTouchBegin(const FVector2D &touch);
+	virtual void UpdateTouchEnd(const FVector2D &touch);
  
 	UCameraComponent* camera = nullptr; 
-	FVector2D mTouchBegin; 
+	FVector2D mTouchBegin;  
 	FVector2D mTouchMoved; 
 	APlayerController *controller = nullptr;
 	UCollidingPawnMovementComponent* pawnMovementComponent = nullptr;
-		
+	PawnMode mode = PawnMode::Camera; 
+
+	// when taking a shot to move ball we store the aimVector here.
+	FVector mAimVector = FVector(0.0f, 0.0f, 0.0f);
+		  
 public:	  
 	// Called every frame
 	virtual void Tick(float DeltaTime) override; 
@@ -38,10 +48,10 @@ public:
 	virtual UPawnMovementComponent* GetMovementComponent() const override;
 
 	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* mesh = nullptr; 
+	class UStaticMeshComponent* ballMesh = nullptr; 
 
 	UPROPERTY(EditAnywhere) 
-	USpringArmComponent* springArm = nullptr; 
+	class USpringArmComponent* springArm = nullptr; 
 
 	/** Touch Begin 2D Screen corrd */
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Swipe")

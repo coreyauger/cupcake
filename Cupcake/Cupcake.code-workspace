@@ -13,7 +13,10 @@
 			"__nullptr": "cpp",
 			"__locale": "cpp",
 			"locale": "cpp",
-			"algorithm": "cpp"
+			"algorithm": "cpp",
+			"iosfwd": "cpp",
+			"iterator": "cpp",
+			"vector": "cpp"
 		}
 	}
 }

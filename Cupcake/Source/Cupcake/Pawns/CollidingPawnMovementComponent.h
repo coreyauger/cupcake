@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h" 
 #include "GameFramework/PawnMovementComponent.h" 
+#include "Camera/CameraComponent.h"
+#include "Components/MeshComponent.h"
 #include "CollidingPawnMovementComponent.generated.h" 
    
 //https://stackoverflow.com/questions/8063696/arkanoid-physics-projectile-physics-simulation
