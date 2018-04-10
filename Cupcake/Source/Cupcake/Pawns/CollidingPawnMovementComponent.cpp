@@ -12,6 +12,8 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
     }
 
     // simulate physics... 
+    //https://gamedev.stackexchange.com/questions/15708/how-can-i-implement-gravity
+    // we want to first check if we are on the ground and if so lets NOT add gravity to the equation
     Velocity = (Velocity + gravity + ConsumeInputVector()) * (1.0f-drag);
 
     // Get (and then clear) the movement vector that we set in ACollidingPawn::Tick
