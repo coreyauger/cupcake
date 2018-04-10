@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h" 
 #include "GameFramework/PawnMovementComponent.h" 
-#include "CollidingPawnMovementComponent.generated.h"
+#include "CollidingPawnMovementComponent.generated.h" 
    
 //https://stackoverflow.com/questions/8063696/arkanoid-physics-projectile-physics-simulation
 /** 
@@ -22,11 +22,11 @@ public:
 
     // TODO: make these a level setting..
     UPROPERTY(EditAnywhere) 
-	FVector gravity = FVector(0.0f, 0.0f, -9.81f);
+	float gravity = -98.1f;
 
     UPROPERTY(EditAnywhere) 
-	float drag = 0.025f; 
- 
+	float drag = 0.05f; 
+  
     // mass in Kg
     UPROPERTY(EditAnywhere) 
 	float mass = 10.0f;	
