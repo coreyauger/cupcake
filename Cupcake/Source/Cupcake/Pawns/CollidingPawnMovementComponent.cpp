@@ -32,12 +32,24 @@ void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float 
                     }
                     //FVector::PointPlaneProject(Hit.Location, movablePlatform->GetComponentLocation())
                     FVector move = Hit.Location.ProjectOnToNormal(movementVector);
+                    //FVector move = (movablePlatform->FinalLocation - Hit.Location)*Hit.Distance;
+FVector Loc = UpdatedComponent->GetComponentLocation();
+FVector bottom = FVector(Loc.X, Loc.Y, Loc.Z-50.0f);
+UE_LOG(LogTemp, Warning, TEXT("** Loc: %s"), *UpdatedComponent->GetComponentLocation().ToString() ); 
+UE_LOG(LogTemp, Warning, TEXT("** Hit: %s"), *Hit.Location.ToString() ); 
+UE_LOG(LogTemp, Warning, TEXT("** BOT: %s"), *move.ToString() ); 
+UE_LOG(LogTemp, Warning, TEXT("** AAA: %s"), *(move-Loc).ToString() ); 
+
+
+FVector bitch = move-Loc;
+bitch = FVector(bitch.X, bitch.Y, 0.0f);
+                    
 
                     FVector hitSize = mesh->GetComponentLocation()-Hit.Location;
                     UE_LOG(LogTemp, Warning, TEXT("hitSize: %f"), hitSize.Size() );
                     UE_LOG(LogTemp, Warning, TEXT("movement2: %s"), *movementVector.ToString() );
-                    UE_LOG(LogTemp, Warning, TEXT("move: %s"), *move.ToString() );
-                    UpdatedComponent->MoveComponent(move, UpdatedComponent->GetComponentRotation(), true); 
+                    UE_LOG(LogTemp, Warning, TEXT("move: %s"), *bitch.ToString() );
+                    UpdatedComponent->MoveComponent(bitch, UpdatedComponent->GetComponentRotation(), true); 
                 }  
             }
         }      
