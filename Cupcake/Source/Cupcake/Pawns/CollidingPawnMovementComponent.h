@@ -27,7 +27,7 @@ public:
 	float gravity = -98.1f;
 
     UPROPERTY(EditAnywhere) 
-	float drag = 0.05f; 
+	float drag = 0.025f; 
   
     // mass in Kg
     UPROPERTY(EditAnywhere) 

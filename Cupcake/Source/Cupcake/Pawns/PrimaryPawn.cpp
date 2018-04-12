@@ -17,8 +17,8 @@ APrimaryPawn::APrimaryPawn()
 
 	RootComponent = ballMesh; 
 	springArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-	springArm->TargetArmLength = 1500.f;
-	springArm->SetWorldRotation(FRotator(-30.0f, 0.0f, 0.0f));
+	springArm->TargetArmLength = 900.f;
+	springArm->SetWorldRotation(FRotator(-40.0f, 0.0f, 0.0f));
 	camera->AttachToComponent(springArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);	
 	// Create an instance of our movement component, and tell it to update the root.
 	pawnMovementComponent = CreateDefaultSubobject<UCollidingPawnMovementComponent>(TEXT("PawnCustomMovementComponent"));
@@ -162,7 +162,7 @@ void APrimaryPawn::UpdateTouchEnd(const FVector2D &touch){
 			// http://api.unrealengine.com/INT/API/Runtime/Core/Math/FVector/index.html
 			FVector look = camera->GetComponentRotation().Vector();
 			//FVector thrust = FVector::VectorPlaneProject(look, FVector(0.0f, 0.0f, 1.0f)) * 4000.0f;
-			FVector thrust = mAimVector * 10.0f;	// TODO: scale by wtf?
+			FVector thrust = mAimVector * 50.0f;	// TODO: scale by wtf?
 			UE_LOG(LogTemp, Warning, TEXT("Move forward !!!!!!!!!!!!!!!!   %s"), *thrust.ToString() );
 			pawnMovementComponent->AddInputVector(thrust);			
 		}
