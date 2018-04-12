@@ -11,31 +11,24 @@ void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float 
             if(Hit.GetActor()){
                 auto* mesh = Hit.GetActor()->FindComponentByClass<UStaticMeshComponent>();  
                 auto* movablePlatform = Hit.GetActor()->FindComponentByClass<UMovablePlatform>();            
-                if(mesh && mesh->Mobility == EComponentMobility::Type::Movable){
-                    // FHitResult HitReverse = FHitResult::GetReversedHit(Hit2);
-                   /* UE_LOG(LogTemp, Warning, TEXT("Movable Hit: %s"), *Hit.Location.ToString() );         
-                    UE_LOG(LogTemp, Warning, TEXT("Movable TraceStart: %s"), *Hit.TraceStart.ToString() );                  
-                    UE_LOG(LogTemp, Warning, TEXT("Movable TraceEnd: %s"), *Hit.TraceEnd.ToString() ); 
-                    FVector desiredMovementThisFrame = Hit.TraceStart-Hit.Location;
-                    UE_LOG(LogTemp, Warning, TEXT("desiredMovementThisFrame: %s"), *desiredMovementThisFrame.ToString() ); 
-                    UE_LOG(LogTemp, Warning, TEXT("UpdatedComponent Location: %s"), *UpdatedComponent->GetComponentLocation().ToString() );                     
-                    UpdatedComponent->MoveComponent(desiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true);  
-                    */            
-                }
+                //if(mesh && mesh->Mobility == EComponentMobility::Type::Movable){                      
+                //}
                 if(movablePlatform){
-                    //UE_LOG(LogTemp, Warning, TEXT("Movable TraceEnd: %s"), *Hit.TraceEnd.ToString() );
-                    //UE_LOG(LogTemp, Warning, TEXT("Final: %s"), *movablePlatform->FinalLocation.ToString() ); 
-                    FVector movementVector = movablePlatform->FinalLocation - mesh->GetComponentLocation();
-                    FVector objVector = UpdatedComponent->GetComponentLocation() - mesh->GetComponentLocation();
-                    FVector finalObjectLocation = objVector+movementVector;
+                    const float BALL_RADIUS = 5.0f;  // <- where do i find this?
+                    // NOTE: we only need the X, Y components to allow the ball to say focused on the platform.
+                    FVector objVector = FVector(Hit.Location.X, Hit.Location.Y, Hit.Location.Z+BALL_RADIUS) - mesh->GetComponentLocation();
+                    FVector finalObjectLocation = movablePlatform->FinalLocation + objVector;
                     FVector objectPath = finalObjectLocation - UpdatedComponent->GetComponentLocation();
+                    
+                    
+                    UE_LOG(LogTemp, Warning, TEXT("** OBJ: %s"), *objVector.ToString() ); 
                     UE_LOG(LogTemp, Warning, TEXT("** HIT: %s"), *Hit.Location.ToString() ); 
                     UE_LOG(LogTemp, Warning, TEXT("** Loc: %s"), *UpdatedComponent->GetComponentLocation().ToString() ); 
                     UE_LOG(LogTemp, Warning, TEXT("** FIN: %s"), *finalObjectLocation.ToString() ); 
                     if(!objectPath.Normalize(0.0001)){ // no movment.. so just return?
                         //return;
                     }
-                    FVector bottom = FVector(UpdatedComponent->GetComponentLocation().X, UpdatedComponent->GetComponentLocation().Y, UpdatedComponent->GetComponentLocation().Z-9.0f);
+                    FVector bottom = FVector(UpdatedComponent->GetComponentLocation().X, UpdatedComponent->GetComponentLocation().Y, UpdatedComponent->GetComponentLocation().Z-BALL_RADIUS);
                     UE_LOG(LogTemp, Warning, TEXT("** BBB: %s"), *bottom.ToString() );
                     FVector dist = Hit.Location - bottom;
                     UE_LOG(LogTemp, Warning, TEXT("** DDD: %s"), *dist.ToString() );
@@ -43,7 +36,9 @@ void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float 
                     FVector move = objectPath * dist.Size();
                     UE_LOG(LogTemp, Warning, TEXT("** MOV: %s"), *move.ToString() ); 
                     
-                    UpdatedComponent->MoveComponent(move, UpdatedComponent->GetComponentRotation(), true); 
+                    FHitResult Hit2;
+                    SafeMoveUpdatedComponent(FVector(move.X, move.Y, 0.0f), UpdatedComponent->GetComponentRotation(), true, Hit2);
+                    //UpdatedComponent->MoveComponent(FVector(move.X, move.Y, 0.0f), UpdatedComponent->GetComponentRotation(), true); 
                 }  
             }
         }      
