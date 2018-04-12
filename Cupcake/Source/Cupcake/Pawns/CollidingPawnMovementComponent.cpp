@@ -17,7 +17,7 @@ void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float 
                     FBoxSphereBounds bounds = UpdatedComponent->Bounds;                   
                     UE_LOG(LogTemp, Warning, TEXT("** WWW: %f"),  bounds.GetSphere().W ); 
                     FVector BallLocation = UpdatedComponent->GetComponentLocation();
-                    const float BALL_RADIUS = 4.5f;  // SOMETHING IS FUXT HERE..
+                    const float BALL_RADIUS = 4.0f;  // SOMETHING IS FUXT HERE..
                     // NOTE: we only need the X, Y components to allow the ball to say focused on the platform.
                     FVector objVector = FVector(Hit.Location.X, Hit.Location.Y, Hit.Location.Z+BALL_RADIUS) - mesh->GetComponentLocation();
                     FVector finalObjectLocation = movablePlatform->FinalLocation + objVector;
