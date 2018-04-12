@@ -1,6 +1,49 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CollidingPawnMovementComponent.h"
+#include "../Environment/MovablePlatform.h"
+
+
+void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float TimeSlice, const FVector& MoveDelta){    
+    if(Hit.IsValidBlockingHit()){
+        if(Hit.Normal.Equals(FVector(0.0f, 0.0f, 1.0f), 0.1f) ){
+            // need to check for "moving" floors and platforms now.
+            if(Hit.GetActor()){
+                auto* mesh = Hit.GetActor()->FindComponentByClass<UStaticMeshComponent>();  
+                auto* movablePlatform = Hit.GetActor()->FindComponentByClass<UMovablePlatform>();            
+                if(mesh && mesh->Mobility == EComponentMobility::Type::Movable){
+                    // FHitResult HitReverse = FHitResult::GetReversedHit(Hit2);
+                   /* UE_LOG(LogTemp, Warning, TEXT("Movable Hit: %s"), *Hit.Location.ToString() );         
+                    UE_LOG(LogTemp, Warning, TEXT("Movable TraceStart: %s"), *Hit.TraceStart.ToString() );                  
+                    UE_LOG(LogTemp, Warning, TEXT("Movable TraceEnd: %s"), *Hit.TraceEnd.ToString() ); 
+                    FVector desiredMovementThisFrame = Hit.TraceStart-Hit.Location;
+                    UE_LOG(LogTemp, Warning, TEXT("desiredMovementThisFrame: %s"), *desiredMovementThisFrame.ToString() ); 
+                    UE_LOG(LogTemp, Warning, TEXT("UpdatedComponent Location: %s"), *UpdatedComponent->GetComponentLocation().ToString() );                     
+                    UpdatedComponent->MoveComponent(desiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true);  
+                    */            
+                }
+                if(movablePlatform){
+                    UE_LOG(LogTemp, Warning, TEXT("Movable TraceEnd: %s"), *Hit.TraceEnd.ToString() );
+                    UE_LOG(LogTemp, Warning, TEXT("Final: %s"), *movablePlatform->FinalLocation.ToString() ); 
+                    FVector movementVector = movablePlatform->FinalLocation - mesh->GetComponentLocation();
+                    UE_LOG(LogTemp, Warning, TEXT("movement: %s"), *movementVector.ToString() ); 
+                    if(!movementVector.Normalize(0.0001)){ // no movment.. so just return?
+                        //return;
+                    }
+                    //FVector::PointPlaneProject(Hit.Location, movablePlatform->GetComponentLocation())
+                    FVector move = Hit.Location.ProjectOnToNormal(movementVector);
+
+                    FVector hitSize = mesh->GetComponentLocation()-Hit.Location;
+                    UE_LOG(LogTemp, Warning, TEXT("hitSize: %f"), hitSize.Size() );
+                    UE_LOG(LogTemp, Warning, TEXT("movement2: %s"), *movementVector.ToString() );
+                    UE_LOG(LogTemp, Warning, TEXT("move: %s"), *move.ToString() );
+                    UpdatedComponent->MoveComponent(move, UpdatedComponent->GetComponentRotation(), true); 
+                }  
+            }
+        }      
+    }
+}
+
 
 void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
@@ -17,9 +60,7 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
     FHitResult FloorHit;
     FVector gravityToApply = FVector(0.0f, 0.0f, 0.0f);
     if(SafeMoveUpdatedComponent(FVector(0.0f, 0.0f, -5.0f), UpdatedComponent->GetComponentRotation(), true, FloorHit)){
-        if(!FloorHit.Normal.Equals(FVector(0.0f, 0.0f, 1.0f), 0.1f) ){
-            gravityToApply.Z += gravity;
-        }
+        if(!FloorHit.Normal.Equals(FVector(0.0f, 0.0f, 1.0f), 0.1f) )gravityToApply.Z += gravity;                     
     }else{
         gravityToApply.Z += gravity;
     }
@@ -66,7 +107,6 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
             //UE_LOG(LogTemp, Warning, TEXT("Hit: %s"), *Hit.Normal.ToString() );
             //if( Hit.Normal.Equals(FVector(0.0f, 0.0f, 1.0f), 0.1f) ){
             //SlideAlongSurface(desiredMovementThisFrame, 1.f - Hit.Time, Hit.Normal, Hit);
-            UpdatedComponent->MoveComponent(FVector(desiredMovementThisFrame.X,desiredMovementThisFrame.Y,0.0f), UpdatedComponent->GetComponentRotation(), true);
             
             //UE_LOG(LogTemp, Warning, TEXT("REFLECT: %s"), *Velocity.MirrorByVector(Hit.ImpactNormal).ToString() );
             UpdatedComponent->MoveComponent(desiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true);

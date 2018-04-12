@@ -15,12 +15,13 @@
 UCLASS() 
 class CUPCAKE_API UCollidingPawnMovementComponent : public UPawnMovementComponent
 {  
-	GENERATED_BODY()  
-   
+	GENERATED_BODY()   
+    
 private:  
    
 public:
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;  
+    virtual void HandleImpact(const FHitResult& Hit, float TimeSlice=0.f, const FVector& MoveDelta = FVector::ZeroVector) override;  
 
     // TODO: make these a level setting..
     UPROPERTY(EditAnywhere) 
