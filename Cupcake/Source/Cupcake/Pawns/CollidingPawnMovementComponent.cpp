@@ -14,21 +14,24 @@ void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float 
                 //if(mesh && mesh->Mobility == EComponentMobility::Type::Movable){                      
                 //}
                 if(movablePlatform){
-                    const float BALL_RADIUS = 5.0f;  // <- where do i find this?
+                    FBoxSphereBounds bounds = UpdatedComponent->Bounds;                   
+                    UE_LOG(LogTemp, Warning, TEXT("** WWW: %f"),  bounds.GetSphere().W ); 
+                    FVector BallLocation = UpdatedComponent->GetComponentLocation();
+                    const float BALL_RADIUS = 4.5f;  // SOMETHING IS FUXT HERE..
                     // NOTE: we only need the X, Y components to allow the ball to say focused on the platform.
                     FVector objVector = FVector(Hit.Location.X, Hit.Location.Y, Hit.Location.Z+BALL_RADIUS) - mesh->GetComponentLocation();
                     FVector finalObjectLocation = movablePlatform->FinalLocation + objVector;
-                    FVector objectPath = finalObjectLocation - UpdatedComponent->GetComponentLocation();
-                    
+                    FVector objectPath = finalObjectLocation - BallLocation;                    
                     
                     UE_LOG(LogTemp, Warning, TEXT("** OBJ: %s"), *objVector.ToString() ); 
                     UE_LOG(LogTemp, Warning, TEXT("** HIT: %s"), *Hit.Location.ToString() ); 
-                    UE_LOG(LogTemp, Warning, TEXT("** Loc: %s"), *UpdatedComponent->GetComponentLocation().ToString() ); 
+                    UE_LOG(LogTemp, Warning, TEXT("** Loc: %s"), *BallLocation.ToString() ); 
                     UE_LOG(LogTemp, Warning, TEXT("** FIN: %s"), *finalObjectLocation.ToString() ); 
                     if(!objectPath.Normalize(0.0001)){ // no movment.. so just return?
                         //return;
                     }
-                    FVector bottom = FVector(UpdatedComponent->GetComponentLocation().X, UpdatedComponent->GetComponentLocation().Y, UpdatedComponent->GetComponentLocation().Z-BALL_RADIUS);
+
+                    FVector bottom = FVector(BallLocation.X, BallLocation.Y, BallLocation.Z-BALL_RADIUS);
                     UE_LOG(LogTemp, Warning, TEXT("** BBB: %s"), *bottom.ToString() );
                     FVector dist = Hit.Location - bottom;
                     UE_LOG(LogTemp, Warning, TEXT("** DDD: %s"), *dist.ToString() );
