@@ -24,13 +24,28 @@ protected:
 	UPROPERTY(BlueprintAssignable)
 	FOnMovmentTransition OnMovmentTransition; 
 
-	UPROPERTY(EditAnywhere)
-	float AutoTransition = 0.0;
+	UPROPERTY(BlueprintAssignable)
+	FOnMovmentTransition OnReturnTransition; 
 
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UPROPERTY(EditAnywhere)
+	bool AutoTransition = false;
+
+	UPROPERTY(EditAnywhere)
+	FRotator FinalRotation = FRotator(0.0f, 0.0f, 0.0f);
+
+	UPROPERTY(EditAnywhere)
+	FVector FinalLocation = FVector(0.0f, 0.0f, 0.0f);
+
+	/** What is the final Rotation? ! */
+	UFUNCTION(BlueprintPure, Category="Movment")
+	FRotator GetFinalRotation(){return FinalRotation;};
 		
-	
+	/** What is the final Position? ! */
+	UFUNCTION(BlueprintPure, Category="Movment")
+	FVector GetFinalPosition(){return FinalLocation;};
 };
+ 
