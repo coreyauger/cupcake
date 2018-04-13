@@ -27,6 +27,18 @@ protected:
 	UPROPERTY(BlueprintAssignable)
 	FOnMovmentTransition OnReturnTransition; 
 
+	class UStaticMeshComponent* mesh;
+
+	struct TimeLocationPair{
+		float Seconds;
+		FVector Location;
+		TimeLocationPair(float sec, FVector location): Seconds(sec), Location(location)
+		{}
+		TimeLocationPair(){}
+	};
+
+	TMap<FString, TimeLocationPair> LastLocationMap;
+
 public:	 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -48,6 +60,8 @@ public:
 	UFUNCTION(BlueprintPure, Category="Movment")
 	FVector GetFinalPosition(){return FinalLocation;};
 
-	FVector LastTickLocation = FVector(0.0f, 0.0f, 0.0f);
+	//FVector LastTickLocation = FVector(0.0f, 0.0f, 0.0f);
+
+	FVector GetThenSetLastLocation(const FString& ActorName);
 };
  
