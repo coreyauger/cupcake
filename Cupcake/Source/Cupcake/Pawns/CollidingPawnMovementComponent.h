@@ -11,7 +11,7 @@
 //https://stackoverflow.com/questions/8063696/arkanoid-physics-projectile-physics-simulation
 /** 
  *     
- */  
+ */     
 UCLASS() 
 class CUPCAKE_API UCollidingPawnMovementComponent : public UPawnMovementComponent
 {  

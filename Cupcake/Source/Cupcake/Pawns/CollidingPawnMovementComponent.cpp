@@ -4,48 +4,48 @@
 #include "../Environment/MovablePlatform.h"
 
 
+
 void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float TimeSlice, const FVector& MoveDelta){    
     if(Hit.IsValidBlockingHit()){
-        if(Hit.Normal.Equals(FVector(0.0f, 0.0f, 1.0f), 0.1f) ){
-            // need to check for "moving" floors and platforms now.
-            if(Hit.GetActor()){
-                auto* mesh = Hit.GetActor()->FindComponentByClass<UStaticMeshComponent>();  
-                auto* movablePlatform = Hit.GetActor()->FindComponentByClass<UMovablePlatform>();            
-                //if(mesh && mesh->Mobility == EComponentMobility::Type::Movable){                      
-                //}
-                if(movablePlatform){
-                    FBoxSphereBounds bounds = UpdatedComponent->Bounds;                   
-                    UE_LOG(LogTemp, Warning, TEXT("** WWW: %f"),  bounds.GetSphere().W ); 
-                    FVector BallLocation = UpdatedComponent->GetComponentLocation();
-                    const float BALL_RADIUS = 4.0f;  // SOMETHING IS FUXT HERE..
-                    // NOTE: we only need the X, Y components to allow the ball to say focused on the platform.
-                    FVector objVector = FVector(Hit.Location.X, Hit.Location.Y, Hit.Location.Z+BALL_RADIUS) - mesh->GetComponentLocation();
-                    FVector finalObjectLocation = movablePlatform->FinalLocation + objVector;
-                    FVector objectPath = finalObjectLocation - BallLocation;                    
-                    
-                    UE_LOG(LogTemp, Warning, TEXT("** OBJ: %s"), *objVector.ToString() ); 
-                    UE_LOG(LogTemp, Warning, TEXT("** HIT: %s"), *Hit.Location.ToString() ); 
-                    UE_LOG(LogTemp, Warning, TEXT("** Loc: %s"), *BallLocation.ToString() ); 
-                    UE_LOG(LogTemp, Warning, TEXT("** FIN: %s"), *finalObjectLocation.ToString() ); 
-                    if(!objectPath.Normalize(0.0001)){ // no movment.. so just return?
-                        //return;
-                    }
-
-                    FVector bottom = FVector(BallLocation.X, BallLocation.Y, BallLocation.Z-BALL_RADIUS);
-                    UE_LOG(LogTemp, Warning, TEXT("** BBB: %s"), *bottom.ToString() );
-                    FVector dist = Hit.Location - bottom;
-                    UE_LOG(LogTemp, Warning, TEXT("** DDD: %s"), *dist.ToString() );
-                    UE_LOG(LogTemp, Warning, TEXT("** DDD: %f"), dist.Size() );
-                    FVector move = objectPath * dist.Size();
-                    UE_LOG(LogTemp, Warning, TEXT("** MOV: %s"), *move.ToString() ); 
-                    
-                    FHitResult Hit2;
-                    SafeMoveUpdatedComponent(FVector(move.X, move.Y, 0.0f), UpdatedComponent->GetComponentRotation(), true, Hit2);
-                    //UpdatedComponent->MoveComponent(FVector(move.X, move.Y, 0.0f), UpdatedComponent->GetComponentRotation(), true); 
-                }  
-            }
-        }      
+        if(Hit.GetActor()){
+            auto* mesh = Hit.GetActor()->FindComponentByClass<UStaticMeshComponent>();  
+            auto* movablePlatform = Hit.GetActor()->FindComponentByClass<UMovablePlatform>();            
+            //if(mesh && mesh->Mobility == EComponentMobility::Type::Movable){                      
+            //}
+            if(movablePlatform){
+                //FBoxSphereBounds bounds = UpdatedComponent->Bounds;                   
+                //UE_LOG(LogTemp, Warning, TEXT("** WWW: %f"),  bounds.GetSphere().W ); 
+                FVector BallLocation = UpdatedComponent->GetComponentLocation();
+                //const float BALL_RADIUS = 2.0;  // SOMETHING IS FUXT HERE..
+                // NOTE: we only need the X, Y components to allow the ball to say focused on the platform.
+                FVector objVector = BallLocation - mesh->GetComponentLocation();
+                FVector finalObjectLocation = movablePlatform->FinalLocation + objVector;
+                FVector objectPath = finalObjectLocation - BallLocation;                    
+                
+                UE_LOG(LogTemp, Warning, TEXT("** OBJ: %s"), *objVector.ToString() ); 
+                UE_LOG(LogTemp, Warning, TEXT("** PLT: %s"), *mesh->GetComponentLocation().ToString() );
+                UE_LOG(LogTemp, Warning, TEXT("** LST: %s"), *movablePlatform->LastTickLocation.ToString() );
+            
+                UE_LOG(LogTemp, Warning, TEXT("** HIT: %s"), *Hit.Location.ToString() ); 
+                UE_LOG(LogTemp, Warning, TEXT("** Loc: %s"), *BallLocation.ToString() ); 
+                UE_LOG(LogTemp, Warning, TEXT("** FIN: %s"), *finalObjectLocation.ToString() ); 
+                if(!objectPath.Normalize(0.0001))return;
+                FVector dist = movablePlatform->LastTickLocation - mesh->GetComponentLocation();
+                //UE_LOG(LogTemp, Warning, TEXT("** DDD: %s"), *dist.ToString() );
+                //UE_LOG(LogTemp, Warning, TEXT("** DIS: %f"), dist.Size() );
+                //UE_LOG(LogTemp, Warning, TEXT("** TSS: %f"), TimeSlice );
+                FVector move = objectPath * dist.Size();
+                //UE_LOG(LogTemp, Warning, TEXT("** DEL: %s"), *MoveDelta.ToString() ); 
+                //UE_LOG(LogTemp, Warning, TEXT("** MOV: %s"), *move.ToString() ); 
+                //UE_LOG(LogTemp, Warning, TEXT("===================================================="));
+                
+                FHitResult Hit2;
+                SafeMoveUpdatedComponent(move, UpdatedComponent->GetComponentRotation(), true, Hit2);
+                //UpdatedComponent->MoveComponent(FVector(move.X, move.Y, 0.0f), UpdatedComponent->GetComponentRotation(), true); 
+            }  
+        }
     }
+
 }
 
 
@@ -63,8 +63,9 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
     // we want to first check if we are on the ground and if so lets NOT add gravity to the equation    
     FHitResult FloorHit;
     FVector gravityToApply = FVector(0.0f, 0.0f, 0.0f);
-    if(SafeMoveUpdatedComponent(FVector(0.0f, 0.0f, -5.0f), UpdatedComponent->GetComponentRotation(), true, FloorHit)){
-        if(!FloorHit.Normal.Equals(FVector(0.0f, 0.0f, 1.0f), 0.1f) )gravityToApply.Z += gravity;                     
+    if(SafeMoveUpdatedComponent(FVector(0.0f, 0.0f, -15.0f), UpdatedComponent->GetComponentRotation(), true, FloorHit)){
+        if(!FloorHit.Normal.Equals(FVector(0.0f, 0.0f, 1.0f), 0.1f) )gravityToApply.Z += gravity;     
+        HandleImpact(FloorHit);              
     }else{
         gravityToApply.Z += gravity;
     }

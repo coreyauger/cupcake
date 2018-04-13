@@ -10,6 +10,7 @@ UMovablePlatform::UMovablePlatform()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.TickGroup = TG_PrePhysics;
  
  	// make sure we default the mesh to movable	
 }
@@ -20,7 +21,8 @@ void UMovablePlatform::BeginPlay()
 {
 	Super::BeginPlay();
 	// ...
-	
+	mesh = GetOwner()->FindComponentByClass<UStaticMeshComponent>();  
+	if(mesh)LastTickLocation = mesh->GetComponentLocation();
 }
 
 
@@ -28,6 +30,10 @@ void UMovablePlatform::BeginPlay()
 void UMovablePlatform::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	// ...
+	if(mesh){
+		// HACK: this is used in CollidingPawn to allowo it to stay fixed to a movable floor
+		LastTickLocation = mesh->GetComponentLocation();
+		//UE_LOG(LogTemp, Warning, TEXT("=== UPDATE: %s"), *LastTickLocation.ToString() ); 
+	}
 }
 
