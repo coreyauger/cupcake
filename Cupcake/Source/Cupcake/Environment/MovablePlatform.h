@@ -27,8 +27,6 @@ protected:
 	UPROPERTY(BlueprintAssignable)
 	FOnMovmentTransition OnReturnTransition; 
 
-	class UStaticMeshComponent* mesh;
-
 public:	 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -50,6 +48,6 @@ public:
 	UFUNCTION(BlueprintPure, Category="Movment")
 	FVector GetFinalPosition(){return FinalLocation;};
 
-	FVector LastTickLocation;
+	FVector LastTickLocation = FVector(0.0f, 0.0f, 0.0f);
 };
  

@@ -22,13 +22,13 @@ void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float 
                 FVector finalObjectLocation = movablePlatform->FinalLocation + objVector;
                 FVector objectPath = finalObjectLocation - BallLocation;                    
                 
-                UE_LOG(LogTemp, Warning, TEXT("** OBJ: %s"), *objVector.ToString() ); 
+                //UE_LOG(LogTemp, Warning, TEXT("** OBJ: %s"), *objVector.ToString() ); 
                 UE_LOG(LogTemp, Warning, TEXT("** PLT: %s"), *mesh->GetComponentLocation().ToString() );
                 UE_LOG(LogTemp, Warning, TEXT("** LST: %s"), *movablePlatform->LastTickLocation.ToString() );
             
-                UE_LOG(LogTemp, Warning, TEXT("** HIT: %s"), *Hit.Location.ToString() ); 
-                UE_LOG(LogTemp, Warning, TEXT("** Loc: %s"), *BallLocation.ToString() ); 
-                UE_LOG(LogTemp, Warning, TEXT("** FIN: %s"), *finalObjectLocation.ToString() ); 
+                //UE_LOG(LogTemp, Warning, TEXT("** HIT: %s"), *Hit.Location.ToString() ); 
+                //UE_LOG(LogTemp, Warning, TEXT("** Loc: %s"), *BallLocation.ToString() ); 
+                //UE_LOG(LogTemp, Warning, TEXT("** FIN: %s"), *finalObjectLocation.ToString() ); 
                 if(!objectPath.Normalize(0.0001))return;
                 FVector dist = movablePlatform->LastTickLocation - mesh->GetComponentLocation();
                 //UE_LOG(LogTemp, Warning, TEXT("** DDD: %s"), *dist.ToString() );
@@ -41,6 +41,7 @@ void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float 
                 
                 FHitResult Hit2;
                 SafeMoveUpdatedComponent(move, UpdatedComponent->GetComponentRotation(), true, Hit2);
+                movablePlatform->LastTickLocation = mesh->GetComponentLocation();
                 //UpdatedComponent->MoveComponent(FVector(move.X, move.Y, 0.0f), UpdatedComponent->GetComponentRotation(), true); 
             }  
         }
