@@ -54,7 +54,6 @@ void APrimaryPawn::Tick(float DeltaTime)
 		springArm->SetWorldRotation(yawUpdate);
 		mTouchBegin = mTouchMoved;
 	}else if(mode == PawnMode::Aim){
-
 		//FHitResult hit;
 		//FCollisionQueryParams traceParams(FName(TEXT("")), false, GetOwner());
 		//controller->GetHitResultAtScreenPosition(singleTap, ECollisionChannel::ECC_Pawn, traceParams, OUT hit);
@@ -63,7 +62,7 @@ void APrimaryPawn::Tick(float DeltaTime)
 		if(controller->DeprojectScreenPositionToWorld(mTouchMoved.X, mTouchMoved.Y, WorldLoc, WorldDir)){
 			// FIXME: is there a better way then making 'WorldDir*5e10f' really long?
 			FVector hit = FMath::LinePlaneIntersection(WorldLoc, WorldDir*5e10f, FPlane(ballLocation, FVector(0.0f, 0.0f, 1.0f)) );
-			UE_LOG(LogTemp, Warning, TEXT("%s PLANE HIT: %s %s"), *mTouchMoved.ToString(), *ballLocation.ToString(), *hit.ToString());
+			//UE_LOG(LogTemp, Warning, TEXT("%s PLANE HIT: %s %s"), *mTouchMoved.ToString(), *ballLocation.ToString(), *hit.ToString());
 			DrawDebugLine(GetWorld(), ballLocation, hit, FColor::Red, false, -1.f, 0, 2.0f);
 			mAimVector = ballLocation - hit;
 		} 
@@ -74,31 +73,24 @@ void APrimaryPawn::Tick(float DeltaTime)
 void APrimaryPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-//	PlayerInputComponent->BindAxis("DragX", this, &APrimaryPawn::DragX);
-//	PlayerInputComponent->BindAxis("DragY", this, &APrimaryPawn::DragY);
 }
 
 void APrimaryPawn::TouchBegin(const FVector2D &touchBegin){ 
-	//UE_LOG(LogTemp, Warning, TEXT("TouchBegin: %s"), *touchBegin.ToString());
-	UE_LOG(LogTemp, Warning, TEXT("TouchBegin"));
+	//UE_LOG(LogTemp, Warning, TEXT("TouchBegin"));
 	mTouchBegin = touchBegin;
 	mTouchMoved = touchBegin;
 	UpdateTouchBegin(touchBegin);
-	// TODO: do a hit test for our pawn.
-	// - if we hit the pawn then we switch into "shot" mode.
 }
 
 void APrimaryPawn::TouchEnd(const FVector2D &touchEnd){
-	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd: %s"), *touchBegin.ToString());
-	UE_LOG(LogTemp, Warning, TEXT("TouchEnd"));
+	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd"));
 	UpdateTouchEnd(touchEnd);
 	mTouchBegin = FVector2D(0.f, 0.f);		// reset the vector 
 	mTouchMoved = FVector2D(0.f, 0.f);
 }
 
 void APrimaryPawn::TouchMoved(const FVector2D &touchMoved){
-	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd: %s"), *touchBegin.ToString());
-	UE_LOG(LogTemp, Warning, TEXT("TouchMove"));
+	//UE_LOG(LogTemp, Warning, TEXT("TouchMove"));
 	mTouchMoved = touchMoved;
 	if(mode == PawnMode::Selected){
 		mode = PawnMode::Aim;
@@ -109,30 +101,7 @@ void APrimaryPawn::TouchMoved(const FVector2D &touchMoved){
 void APrimaryPawn::SingleTap(const FVector2D &singleTap){
 	//UE_LOG(LogTemp, Warning, TEXT("TouchEnd: %s"), *touchBegin.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("SingleTap !"));
-	UpdateTouchBegin(singleTap); 
-	/*
-	if(controller){
-		UE_LOG(LogTemp, Warning, TEXT("Hit Test !!"));
-		FHitResult hit;
-		FCollisionQueryParams traceParams(FName(TEXT("")), false, GetOwner());
-		controller->GetHitResultAtScreenPosition(singleTap, ECollisionChannel::ECC_Pawn, traceParams, OUT hit);
-		if(hit.GetActor()){
-			UE_LOG(LogTemp, Warning, TEXT("UGrabber Hit : %s"), *hit.GetActor()->GetName() );
-			// TODO: this could be used to selct or query items in the scene..
-			//GetOwner()->GetActor()->
-			// TODO: trying to move our pawn with a click
-			if (pawnMovementComponent && (pawnMovementComponent->UpdatedComponent == RootComponent)){
-				// TODO: we want the camera look vector projected onto the groud plane...
-				// VectorPlaneProject
-				// http://api.unrealengine.com/INT/API/Runtime/Core/Math/FVector/index.html
-				FVector look = camera->GetComponentRotation().Vector();
-				FVector thrust = FVector::VectorPlaneProject(look, FVector(0.0f, 0.0f, 1.0f)) * 4000.0f;
-				UE_LOG(LogTemp, Warning, TEXT("Move forward !!!!!!!!!!!!!!!!   %s"), *thrust.ToString() );
-				pawnMovementComponent->AddInputVector(thrust);
-			}
-		}
-	}
-	*/
+	UpdateTouchBegin(singleTap); 	
 }
 
  
@@ -140,7 +109,6 @@ void APrimaryPawn::UpdateTouchBegin(const FVector2D &touch){
 	// reset needed vars..
 	mAimVector = GetActorLocation();
 	if(controller){
-		UE_LOG(LogTemp, Warning, TEXT("Hit Test !!"));
 		FHitResult hit;
 		FCollisionQueryParams traceParams(FName(TEXT("")), false, GetOwner());
 		controller->GetHitResultAtScreenPosition(touch, ECollisionChannel::ECC_Pawn, traceParams, OUT hit);
