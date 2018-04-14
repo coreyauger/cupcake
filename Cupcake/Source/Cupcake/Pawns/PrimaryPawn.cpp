@@ -18,7 +18,7 @@ APrimaryPawn::APrimaryPawn()
 	RootComponent = ballMesh; 
 	springArm->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
 	springArm->TargetArmLength = 900.f;
-	springArm->SetWorldRotation(FRotator(-40.0f, 0.0f, 0.0f));
+	springArm->SetWorldRotation(FRotator(-30.0f, 0.0f, 0.0f));
 	camera->AttachToComponent(springArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);	
 	// Create an instance of our movement component, and tell it to update the root.
 	pawnMovementComponent = CreateDefaultSubobject<UCollidingPawnMovementComponent>(TEXT("PawnCustomMovementComponent"));
