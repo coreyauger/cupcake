@@ -2,6 +2,7 @@
 
 
 #include "MovablePlatform.h"
+#include "ConstructorHelpers.h"
 #include <Kismet/GameplayStatics.h> 
 
 // Sets default values for this component's properties
@@ -19,9 +20,47 @@ UMovablePlatform::UMovablePlatform()
 // Called when the game starts
 void UMovablePlatform::BeginPlay()
 {
+	FOnTimelineFloat onTimelineCallback;
+	FOnTimelineEventStatic onTimelineFinishedCallback;
+ 
 	Super::BeginPlay();
-	// ...
+
 	mesh = GetOwner()->FindComponentByClass<UStaticMeshComponent>();  
+	StartLocation = GetOwner()->GetActorLocation();
+	UE_LOG(LogTemp, Warning, TEXT("UMovablePlatform::BeginPlay %s"), *GetOwner()->GetActorLocation().ToString());
+ 
+	UE_LOG(LogTemp, Warning, TEXT("UMovablePlatform::BeginPlay"));
+	if (FloatCurve != NULL)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Got FloatCurve"));
+		MyTimeline = NewObject<UTimelineComponent>(this, FName("TimelineAnimation"));
+		MyTimeline->CreationMethod = EComponentCreationMethod::UserConstructionScript; // Indicate it comes from a blueprint so it gets cleared when we rerun construction scripts
+		
+		// CA - this is only on a UActor
+		//this->BlueprintCreatedComponents.Add(MyTimeline); // Add to array so it gets saved
+		MyTimeline->SetNetAddressable();	// This component has a stable name that can be referenced for replication
+ 
+		MyTimeline->SetPropertySetObject(this); // Set which object the timeline should drive properties on
+		MyTimeline->SetDirectionPropertyName(FName("TimelineDirection"));
+ 
+		MyTimeline->SetLooping(Looping);
+		MyTimeline->SetTimelineLength(5.0f);
+		MyTimeline->SetTimelineLengthMode(ETimelineLengthMode::TL_LastKeyFrame);
+ 
+		MyTimeline->SetPlaybackPosition(0.0f, false);
+ 
+		//Add the float curve to the timeline and connect it to your timelines's interpolation function
+		onTimelineCallback.BindUFunction(this, FName{ TEXT("TimelineCallback") });
+		onTimelineFinishedCallback.BindUFunction(this, FName{ TEXT("TimelineFinishedCallback") });
+		MyTimeline->AddInterpFloat(FloatCurve, onTimelineCallback);
+		MyTimeline->SetTimelineFinishedFunc(onTimelineFinishedCallback);
+ 
+		MyTimeline->RegisterComponent();
+	}else{
+		UE_LOG(LogTemp, Warning, TEXT("NO FloatCurve for MovablePlatform"));
+	}
+
+	if(AutoPlay)PlayTimeline();
 	//if(mesh)LastTickLocation = mesh->GetComponentLocation();
 }
 
@@ -51,5 +90,44 @@ FVector UMovablePlatform::GetThenSetLastLocation(const FString& ActorName){
 void UMovablePlatform::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (MyTimeline != NULL){
+		MyTimeline->TickComponent(DeltaTime, ELevelTick::LEVELTICK_TimeOnly, NULL);
+	}
+}
+
+
+void UMovablePlatform::TimelineCallback(float interpolatedVal)
+{
+	UE_LOG(LogTemp, Warning, TEXT("TimelineCallback"));
+	FVector movement = FinalLocation - StartLocation;
+	FVector newLocation = StartLocation + (movement * interpolatedVal);
+	UE_LOG(LogTemp, Warning, TEXT("interpolatedVal: %f"), interpolatedVal );
+	UE_LOG(LogTemp, Warning, TEXT("newLocation: %s"), *newLocation.ToString() );
+	GetOwner()->SetActorLocation(newLocation);
+
+    // This function is called for every tick in the timeline.
+}
+ 
+void UMovablePlatform::TimelineFinishedCallback()
+{
+	UE_LOG(LogTemp, Warning, TEXT("TimelineFinishedCallback"));
+}
+
+void UMovablePlatform::PlayTimelineReverse()
+{
+	UE_LOG(LogTemp, Warning, TEXT("PlayTimelineReverse"));
+	if (MyTimeline != NULL){
+		UE_LOG(LogTemp, Warning, TEXT("Reverse"));
+		MyTimeline->ReverseFromEnd();
+	}
+}
+ 
+void UMovablePlatform::PlayTimeline()
+{
+	UE_LOG(LogTemp, Warning, TEXT("PlayTimeline"));
+	if (MyTimeline != NULL){
+		UE_LOG(LogTemp, Warning, TEXT("PlayFromStart"));
+		MyTimeline->PlayFromStart();
+	}
 }
 
