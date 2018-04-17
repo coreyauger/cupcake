@@ -25,10 +25,10 @@ public:
 
     // TODO: make these a level setting..
     UPROPERTY(EditAnywhere) 
-	float gravity = -98.1f;
+	float gravity = -10.1f;
 
     UPROPERTY(EditAnywhere) 
-	float drag = 0.025f; 
+	float drag = 0.01f; 
   
     // mass in Kg
     UPROPERTY(EditAnywhere) 
