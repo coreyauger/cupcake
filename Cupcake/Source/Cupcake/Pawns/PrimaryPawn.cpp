@@ -130,7 +130,7 @@ void APrimaryPawn::UpdateTouchEnd(const FVector2D &touch){
 			// http://api.unrealengine.com/INT/API/Runtime/Core/Math/FVector/index.html
 			FVector look = camera->GetComponentRotation().Vector();
 			//FVector thrust = FVector::VectorPlaneProject(look, FVector(0.0f, 0.0f, 1.0f)) * 4000.0f;
-			FVector thrust = mAimVector * 25.0f;	// TODO: scale by wtf?
+			FVector thrust = mAimVector * 15.0f;	// TODO: scale by wtf?
 			UE_LOG(LogTemp, Warning, TEXT("Move forward !!!!!!!!!!!!!!!!   %s"), *thrust.ToString() );
 			pawnMovementComponent->AddInputVector(thrust);			
 		}
