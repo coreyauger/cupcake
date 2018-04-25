@@ -47,6 +47,7 @@ void APrimaryPawn::BeginPlay()
 void APrimaryPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	// TODO: if player below some thresh in Z axis.. they are dead
 	if(mode == PawnMode::Camera){
 		FRotator yawUpdate = springArm->GetComponentRotation();
 		FVector2D delta = mTouchMoved - mTouchBegin;	
