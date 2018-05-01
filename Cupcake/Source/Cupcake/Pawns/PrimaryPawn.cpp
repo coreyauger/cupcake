@@ -3,6 +3,7 @@
 
 #include "PrimaryPawn.h"
 #include "DrawDebugHelpers.h" 
+#include "UObject/ConstructorHelpers.h"
 
 #define OUT
 
@@ -22,6 +23,10 @@ APrimaryPawn::APrimaryPawn()
 	camera->AttachToComponent(springArm, FAttachmentTransformRules::KeepWorldTransform, USpringArmComponent::SocketName);	
 	// Create an instance of our movement component, and tell it to update the root.
 	pawnMovementComponent = CreateDefaultSubobject<UCollidingPawnMovementComponent>(TEXT("PawnCustomMovementComponent"));
+
+	// UI
+	ConstructorHelpers::FClassFinder<UUserWidget> UIClassFinder(TEXT("/Game/UI/PlayerUI"));
+	TSubclassOf<class UUserWidget> PlayerUIClass = UIClassFinder.Class;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0; 
 }
