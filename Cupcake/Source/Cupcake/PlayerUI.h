@@ -15,6 +15,8 @@ class CUPCAKE_API UPlayerUI : public UUserWidget
 	GENERATED_BODY()
 	
 	
-	
+	public:
+
+	//virtual void Setup();
 	
 };

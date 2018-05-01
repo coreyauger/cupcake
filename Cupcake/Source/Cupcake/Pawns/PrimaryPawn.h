@@ -38,6 +38,10 @@ protected:
 
 	// when taking a shot to move ball we store the aimVector here.
 	FVector mAimVector = FVector(0.0f, 0.0f, 0.0f);
+
+	// PlayerUI
+	class UPlayerUI* mPlayerUI = nullptr;
+	TSubclassOf<class UUserWidget> PlayerUIClass;
 		  
 public:	  
 	// Called every frame

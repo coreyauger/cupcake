@@ -4,6 +4,8 @@
 #include "PrimaryPawn.h"
 #include "DrawDebugHelpers.h" 
 #include "UObject/ConstructorHelpers.h"
+#include "Blueprint/UserWidget.h"
+#include "../PlayerUI.h"
 
 #define OUT
 
@@ -25,9 +27,12 @@ APrimaryPawn::APrimaryPawn()
 	pawnMovementComponent = CreateDefaultSubobject<UCollidingPawnMovementComponent>(TEXT("PawnCustomMovementComponent"));
 
 	// UI
-	ConstructorHelpers::FClassFinder<UUserWidget> UIClassFinder(TEXT("/Game/UI/PlayerUI"));
-	TSubclassOf<class UUserWidget> PlayerUIClass = UIClassFinder.Class;
-
+	ConstructorHelpers::FClassFinder<UUserWidget> WidgetAsset(TEXT("/Game/UI/PlayerUI"));
+	if( WidgetAsset.Succeeded() ){	// Find PlayeUI blueprint and store a refrence to the class (create instance in BeginPlay)
+		PlayerUIClass = WidgetAsset.Class;		
+	}else {
+		UE_LOG(LogTemp, Error, TEXT("Could not get Find Class UPlayerUI."));
+	}
 	AutoPossessPlayer = EAutoReceiveInput::Player0; 
 }
 
@@ -46,6 +51,15 @@ void APrimaryPawn::BeginPlay()
 	}else{
 		UE_LOG(LogTemp, Warning, TEXT("Wee we have a player controller"));
 	}
+
+	if( PlayerUIClass ){         
+		 mPlayerUI = CreateWidget<UPlayerUI>(GetWorld()->GetFirstPlayerController(), PlayerUIClass);                  
+         if( mPlayerUI ){   // Make sure widget was created           
+             mPlayerUI->AddToViewport( );
+         }else{
+			 UE_LOG(LogTemp, Error, TEXT("Could not get create instance of PlayerUI."));
+		 }
+     }
 }
 
 // Called every frame
