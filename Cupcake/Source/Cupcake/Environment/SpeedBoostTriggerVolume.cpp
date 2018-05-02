@@ -42,5 +42,8 @@ void ASpeedBoostTriggerVolume::OnOverlapEnd(class AActor* OverlappedActor, class
         // print to screen using above defined method when actor leaves trigger volume
         print("Overlap Ended");
         printFString("%s has left the Trigger Volume", *OtherActor->GetName());
+        // TODO: check if the Other actor is an instance of "game pawn" (we might want enemy ai to respond to boost as well)
+        // type cast and apply the force..
+        // pawnMovementComponent->AddInputVector(thrust);	
     }
 }
