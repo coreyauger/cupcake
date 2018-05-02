@@ -18,6 +18,8 @@ class CUPCAKE_API ASpeedBoostTriggerVolume : public ATriggerVolume
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	
 	
 public:
 
@@ -33,4 +35,7 @@ public:
 	void OnOverlapEnd(class AActor* OverlappedActor, class AActor* OtherActor);
 	
 	
+	UPROPERTY(EditAnywhere)
+	class UStaticMeshComponent* SpeedBoostMesh = nullptr; 
+
 };
