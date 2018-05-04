@@ -69,8 +69,6 @@ void ASpeedBoostTriggerVolume::OnOverlapBegin(class AActor* OverlappedActor, cla
         
                 // Or you can start playing the sound immediately.
                 boostAudioComponent->Play();
-            }else{
-                UE_LOG(LogTemp, Warning, TEXT("NO SOUND :(") );
             }
 
         // TODO: check if the Other actor is an instance of "game pawn" (we might want enemy ai to respond to boost as well)

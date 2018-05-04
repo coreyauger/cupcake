@@ -72,7 +72,8 @@ void UMovablePlatform::BeginPlay()
 
 	if (movableAudioCue->IsValidLowLevelFast()) {
 		movableAudioComponent->SetSound(movableAudioCue);
-		movableAudioComponent->SetupAttachment(mesh); 
+		movableAudioComponent->AttachTo(mesh); 		
+		movableAudioComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));		
 	}
 
 	if(AutoPlay)PlayTimeline();
@@ -113,36 +114,42 @@ void UMovablePlatform::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UMovablePlatform::TimelineCallback(float interpolatedVal)
 {
-	UE_LOG(LogTemp, Warning, TEXT("TimelineCallback"));
 	FVector movement = FinalLocation - StartLocation;
 	FVector newLocation = StartLocation + (movement * interpolatedVal);
-	UE_LOG(LogTemp, Warning, TEXT("interpolatedVal: %f"), interpolatedVal );
-	UE_LOG(LogTemp, Warning, TEXT("newLocation: %s"), *newLocation.ToString() );
+	//UE_LOG(LogTemp, Warning, TEXT("interpolatedVal: %f"), interpolatedVal );
+	//UE_LOG(LogTemp, Warning, TEXT("newLocation: %s"), *newLocation.ToString() );
 	GetOwner()->SetActorLocation(newLocation);
+	if(movableAudioComponent && (interpolatedVal == 0.0 || interpolatedVal >= 0.99) ){
+		movableAudioComponent->Play();
+	}
 
     // This function is called for every tick in the timeline.
 }
  
 void UMovablePlatform::TimelineFinishedCallback()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TimelineFinishedCallback"));
+	//UE_LOG(LogTemp, Warning, TEXT("TimelineFinishedCallback"));
 }
 
 void UMovablePlatform::PlayTimelineReverse()
 {
-	UE_LOG(LogTemp, Warning, TEXT("PlayTimelineReverse"));
+	//UE_LOG(LogTemp, Warning, TEXT("PlayTimelineReverse"));
 	if (MyTimeline != NULL){
-		UE_LOG(LogTemp, Warning, TEXT("Reverse"));
 		MyTimeline->ReverseFromEnd();
+		if(movableAudioComponent){
+			movableAudioComponent->Play();
+		}
 	}
 }
  
 void UMovablePlatform::PlayTimeline()
 {
-	UE_LOG(LogTemp, Warning, TEXT("PlayTimeline"));
+	//UE_LOG(LogTemp, Warning, TEXT("PlayTimeline"));
 	if (MyTimeline != NULL){
-		UE_LOG(LogTemp, Warning, TEXT("PlayFromStart"));
 		MyTimeline->PlayFromStart();
+		if(movableAudioComponent){
+			movableAudioComponent->Play();
+		}
 	}
 }
 
