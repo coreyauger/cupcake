@@ -50,6 +50,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual UPawnMovementComponent* GetMovementComponent() const override;
+	void AddInputVector(const FVector &thrust);
 
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* ballMesh = nullptr; 

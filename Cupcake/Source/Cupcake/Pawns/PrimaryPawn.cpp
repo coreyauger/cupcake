@@ -144,17 +144,21 @@ void APrimaryPawn::UpdateTouchBegin(const FVector2D &touch){
 
 void APrimaryPawn::UpdateTouchEnd(const FVector2D &touch){
 	if(mode == PawnMode::Aim){
-		if (pawnMovementComponent && (pawnMovementComponent->UpdatedComponent == RootComponent)){
-			// TODO: we want the camera look vector projected onto the groud plane...
-			// VectorPlaneProject
-			// http://api.unrealengine.com/INT/API/Runtime/Core/Math/FVector/index.html
-			FVector look = camera->GetComponentRotation().Vector();
-			//FVector thrust = FVector::VectorPlaneProject(look, FVector(0.0f, 0.0f, 1.0f)) * 4000.0f;
-			FVector thrust = mAimVector * 15.0f;	// TODO: scale by wtf?
+		// http://api.unrealengine.com/INT/API/Runtime/Core/Math/FVector/index.html
+		//FVector look = camera->GetComponentRotation().Vector();
+		//FVector thrust = FVector::VectorPlaneProject(look, FVector(0.0f, 0.0f, 1.0f)) * 4000.0f;
+		FVector thrust = mAimVector * 15.0f;	// TODO: scale by wtf?
+		AddInputVector(thrust);					
+		mode = PawnMode::Camera;
+	}
+}
+
+
+void APrimaryPawn::AddInputVector(const FVector &thrust){
+	UE_LOG(LogTemp, Warning, TEXT("AddInputVector") );
+	if (pawnMovementComponent && (pawnMovementComponent->UpdatedComponent == RootComponent)){
 			UE_LOG(LogTemp, Warning, TEXT("Move forward !!!!!!!!!!!!!!!!   %s"), *thrust.ToString() );
 			pawnMovementComponent->AddInputVector(thrust);			
 		}
-		mode = PawnMode::Camera;
-	}
 }
 
