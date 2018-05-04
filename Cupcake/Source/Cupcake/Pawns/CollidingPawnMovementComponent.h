@@ -18,8 +18,13 @@ class CUPCAKE_API UCollidingPawnMovementComponent : public UPawnMovementComponen
 	GENERATED_BODY()   
     
 private:   
+
+protected:
+	virtual void BeginPlay() override;
    
 public:
+    UCollidingPawnMovementComponent();
+    
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;  
     virtual void HandleImpact(const FHitResult& Hit, float TimeSlice=0.f, const FVector& MoveDelta = FVector::ZeroVector) override;  
 
@@ -33,5 +38,12 @@ public:
     // mass in Kg
     UPROPERTY(EditAnywhere) 
 	float mass = 10.0f;	
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+    class USoundCue* impactAudioCue;
+
+    UPROPERTY(EditAnywhere, Category = "Audio")
+    class UAudioComponent* impactAudioComponent;
+
 };  
  

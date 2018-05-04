@@ -88,7 +88,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Audio")
     class USoundCue* movableAudioCue;
 
-
     UPROPERTY(EditAnywhere, Category = "Audio")
     class UAudioComponent* movableAudioComponent;	
 };

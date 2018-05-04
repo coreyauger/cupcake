@@ -18,10 +18,9 @@ ASpeedBoostTriggerVolume::ASpeedBoostTriggerVolume(){
     // CA - This is key to having the mesh travel with the trigger volume
     if(SpeedBoostMesh)SpeedBoostMesh->SetupAttachment(RootComponent);    
 
+    // Audio 
     static ConstructorHelpers::FObjectFinder<USoundCue> speedBoostCue(TEXT("/Game/Sounds/speedBoost_Cue"));
     boostAudioCue = speedBoostCue.Object;
-
-    // setup audio component
     boostAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("SpeedBoostAudioComp"));
     if(!boostAudioComponent){
         UE_LOG(LogTemp, Warning, TEXT("Speed Boost could not create audio component"));

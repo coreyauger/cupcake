@@ -1,11 +1,27 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CollidingPawnMovementComponent.h"
+#include "ConstructorHelpers.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundCue.h"
 #include "../Environment/MovablePlatform.h"
 
-//UCollidingPawnMovementComponent::UCollidingPawnMovementComponent(){
-    // TODO: setup the impact sound Cue
-//}
+UCollidingPawnMovementComponent::UCollidingPawnMovementComponent(){
+    // Audio 
+    static ConstructorHelpers::FObjectFinder<USoundCue> impactCue(TEXT("/Game/Sounds/impact_Cue"));
+    impactAudioCue = impactCue.Object;
+    impactAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("impactAudioComp"));
+    if(!impactAudioComponent){
+        UE_LOG(LogTemp, Warning, TEXT("UCollidingPawnMovementComponent could not create audio component"));
+    }
+}
+
+void UCollidingPawnMovementComponent::BeginPlay(){
+    Super::BeginPlay();
+	if (impactAudioCue->IsValidLowLevelFast()) {
+		impactAudioComponent->SetSound(impactAudioCue);
+	}
+}
 
 void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float TimeSlice, const FVector& MoveDelta){    
     if(Hit.IsValidBlockingHit()){
@@ -44,7 +60,7 @@ void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float 
                 //UE_LOG(LogTemp, Warning, TEXT("===================================================="));
                 
                 FHitResult Hit2;
-                SafeMoveUpdatedComponent(move, UpdatedComponent->GetComponentRotation(), true, Hit2);
+                SafeMoveUpdatedComponent(move, UpdatedComponent->GetComponentRotation(), true, Hit2);                
                 //UpdatedComponent->MoveComponent(FVector(move.X, move.Y, 0.0f), UpdatedComponent->GetComponentRotation(), true); 
             }  
         }
@@ -120,7 +136,10 @@ void UCollidingPawnMovementComponent::TickComponent(float DeltaTime, enum ELevel
             //UE_LOG(LogTemp, Warning, TEXT("REFLECT: %s"), *Velocity.MirrorByVector(Hit.ImpactNormal).ToString() );
             UpdatedComponent->MoveComponent(desiredMovementThisFrame, UpdatedComponent->GetComponentRotation(), true);
             
-
+            if(impactAudioComponent){
+                UE_LOG(LogTemp, Warning, TEXT("** PLAY IMPACT") ); 
+                impactAudioComponent->Play();
+            }
             //GetOwner()->SetActorLocation(GetOwner()->GetActorLocation() + DesiredMovementThisFrame);
         } 
          
