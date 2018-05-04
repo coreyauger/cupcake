@@ -84,5 +84,12 @@ public:
 	//FVector LastTickLocation = FVector(0.0f, 0.0f, 0.0f);
 
 	FVector GetThenSetLastLocation(const FString& ActorName);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+    class USoundCue* movableAudioCue;
+
+
+    UPROPERTY(BlueprintReadOnly, Category = "Audio")
+    class UAudioComponent* movableAudioComponent;	
 };
  

@@ -19,7 +19,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	
+	virtual void PostInitializeComponents() override;
+
 	
 public:
 
@@ -37,5 +38,12 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* SpeedBoostMesh = nullptr; 
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+    class USoundCue* boostAudioCue;
+
+
+    UPROPERTY(BlueprintReadOnly, Category = "Audio")
+    class UAudioComponent* boostAudioComponent;	
 
 };

@@ -3,6 +3,9 @@
 
 #include "SpeedBoostTriggerVolume.h"
 #include "../Debug.h"
+#include "ConstructorHelpers.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundCue.h"
 #include "../Pawns/PrimaryPawn.h"
 
 
@@ -14,6 +17,25 @@ ASpeedBoostTriggerVolume::ASpeedBoostTriggerVolume(){
     SpeedBoostMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SpeedBoostMesh"));
     // CA - This is key to having the mesh travel with the trigger volume
     if(SpeedBoostMesh)SpeedBoostMesh->SetupAttachment(RootComponent);    
+
+    static ConstructorHelpers::FObjectFinder<USoundCue> speedBoostCue(TEXT("/Game/Sounds/speedBoost_Cue"));
+    boostAudioCue = speedBoostCue.Object;
+
+    // setup audio component
+    boostAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("SpeedBoostAudioComp"));
+    if(!boostAudioComponent){
+        UE_LOG(LogTemp, Warning, TEXT("Speed Boost could not create audio component"));
+    }else{
+        boostAudioComponent->SetupAttachment(RootComponent);    
+    }
+}
+
+
+void ASpeedBoostTriggerVolume::PostInitializeComponents(){
+	Super::PostInitializeComponents();
+	if (boostAudioCue->IsValidLowLevelFast()) {
+		boostAudioComponent->SetSound(boostAudioCue);
+	}
 }
 
 void ASpeedBoostTriggerVolume::BeginPlay()
@@ -38,6 +60,18 @@ void ASpeedBoostTriggerVolume::OnOverlapBegin(class AActor* OverlappedActor, cla
             UE_LOG(LogTemp, Warning, TEXT("Overlap Begin Other Actor = %s"), *OtherActor->GetName() );
             auto PrimaryPawn = static_cast<APrimaryPawn*>(OtherActor);
             PrimaryPawn->AddInputVector( FVector(5000.0, 0.0, 0.0) );
+            
+            if(boostAudioComponent){
+                //float startTime = 9.f;
+                //float volume = 1.0f;
+                //float fadeTime = 1.0f;
+                //boostAudioComponent->FadeIn(fadeTime, volume, startTime);
+        
+                // Or you can start playing the sound immediately.
+                boostAudioComponent->Play();
+            }else{
+                UE_LOG(LogTemp, Warning, TEXT("NO SOUND :(") );
+            }
 
         // TODO: check if the Other actor is an instance of "game pawn" (we might want enemy ai to respond to boost as well)
         }

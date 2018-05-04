@@ -3,7 +3,9 @@
 #include "CollidingPawnMovementComponent.h"
 #include "../Environment/MovablePlatform.h"
 
-
+//UCollidingPawnMovementComponent::UCollidingPawnMovementComponent(){
+    // TODO: setup the impact sound Cue
+//}
 
 void UCollidingPawnMovementComponent::HandleImpact(const FHitResult& Hit, float TimeSlice, const FVector& MoveDelta){    
     if(Hit.IsValidBlockingHit()){

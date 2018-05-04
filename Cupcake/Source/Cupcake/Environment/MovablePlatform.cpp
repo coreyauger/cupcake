@@ -3,6 +3,8 @@
 
 #include "MovablePlatform.h"
 #include "ConstructorHelpers.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundCue.h"
 #include <Kismet/GameplayStatics.h> 
 
 // Sets default values for this component's properties
@@ -14,8 +16,15 @@ UMovablePlatform::UMovablePlatform()
 	//PrimaryComponentTick.TickGroup = TG_PrePhysics;
  
  	// make sure we default the mesh to movable	
+	
+	// Audio...
+	static ConstructorHelpers::FObjectFinder<USoundCue> speedBoostCue(TEXT("/Game/Sounds/movable_Cue"));
+    movableAudioCue = speedBoostCue.Object;
+	movableAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("movableAudioComp"));
+    if(!movableAudioComponent){
+        UE_LOG(LogTemp, Warning, TEXT("Movable could not create audio component"));
+    }
 } 
-
 
 // Called when the game starts
 void UMovablePlatform::BeginPlay()
@@ -24,6 +33,7 @@ void UMovablePlatform::BeginPlay()
 	FOnTimelineEventStatic onTimelineFinishedCallback;
  
 	Super::BeginPlay();
+
 
 	mesh = GetOwner()->FindComponentByClass<UStaticMeshComponent>();  
 	StartLocation = GetOwner()->GetActorLocation();
@@ -58,6 +68,11 @@ void UMovablePlatform::BeginPlay()
 		MyTimeline->RegisterComponent();
 	}else{
 		UE_LOG(LogTemp, Warning, TEXT("NO FloatCurve for MovablePlatform"));
+	}
+
+	if (movableAudioCue->IsValidLowLevelFast()) {
+		movableAudioComponent->SetSound(movableAudioCue);
+		movableAudioComponent->SetupAttachment(mesh); 
 	}
 
 	if(AutoPlay)PlayTimeline();
